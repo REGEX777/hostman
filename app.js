@@ -8,7 +8,7 @@ import colors from 'colors';
 
 // Route Imports
 import userRoute from './routes/Home.js'
-
+import keyDatils from './routes/keyDetails.js'
 
 
 const PORT = process.env.PORT
@@ -20,7 +20,8 @@ app.use(express.static('public'))
 app.use(express.urlencoded({ extended: true }))
 
 
-app.get('/', userRoute)
+app.use('/', userRoute)
+app.use('/apidetails', keyDatils)
 
 app.listen(PORT, ()=>{
     console.log(`[+] Server Running On Port ${PORT}`.green)
