@@ -2,7 +2,11 @@
 export default {
   content: ["./views/**/*.{html,ejs,js}"],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily:{
+        "poppins": 'Poppins, sans-serif'
+      }
+    },
   },
   plugins: [],
 }
