@@ -7,7 +7,7 @@
         <div class="flex items-center justify-center w-full font-poppins">
             <div class="w-[90%] flex flex-col items-start justify-start gap-10">
                 <p class="text-white text-2xl font-medium">API Details</p>
-                <div class="flex flex-col gap-10 items-center justify-center w-[60%] h-[40rem] bg-[#111111] rounded-lg">
+                <div class="flex flex-col gap-10 items-center justify-center w-[60%] min-h-[40rem] bg-[#111111] rounded-lg">
                     <div class="flex items-start justify-start flex-col w-[90%] text-white gap-5">
                         <p>API Key</p>
                         <div class="flex items-center justify-start h-12 w-[70%] bg-[#181818] rounded-lg">
@@ -17,11 +17,32 @@
                     <div class="flex items-start justify-start flex-col w-[90%] text-white gap-5">
                         <p>Access Logs</p>
                         <div class="flex items-center justify-center flex-col w-full rounded-lg">
-                            <div class="flex items-center justify-between w-full h-[10rem] bg-[#1F1E1E] rounded-lg">
-                                <div class="flex items-center justify-between w-full">
-                                    <div class="flex items-center justify-center">
-                                        <p>Location</p>
+                            <div class="flex items-center justify-between w-full h-[22rem] bg-[#1F1E1E] rounded-lg overflow-auto">
+                                <div class="w-full">
+                                    <div class="flex items-center justify-between w-full h-16 bg-[#2A2A2A]">
+                                        <div class="flex items-center justify-center w-1/3">
+                                            <p class="pl-4">Location</p>
+                                        </div>
+                                        <div class="flex items-center justify-center w-1/3">
+                                            <p>Time</p>
+                                        </div>
+                                        <div class="flex items-center justify-center w-1/3">
+                                            <p>Request Type</p>
+                                        </div>
                                     </div>
+                                    <% for (let i = 0; i < 9; i++) { %>
+                                        <div class="flex items-center justify-between w-full h-16 <% if (i % 2 === 0) { %>bg-[#333333]<% } else { %>bg-[#444444]<% } %>">
+                                            <div class="flex items-center justify-center w-1/3">
+                                                <p class="pl-4">Location <%= i + 1 %></p>
+                                            </div>
+                                            <div class="flex items-center justify-center w-1/3">
+                                                <p>Time <%= i + 1 %></p>
+                                            </div>
+                                            <div class="flex items-center justify-center w-1/3">
+                                                <p>Request Type <%= i + 1 %></p>
+                                            </div>
+                                        </div>
+                                    <% } %>
                                 </div>
                             </div> 
                         </div>
