@@ -3,6 +3,8 @@ import {v4 as uuidv4} from 'uuid';
 import express from 'express';
 import mongoose from 'mongoose';
 import path from 'path'
+import fs from 'fs';
+
 
 // Model Import
 
@@ -48,7 +50,7 @@ router.get("/", (req, res)=>{
     res.json({"error": "Req type not supported."})
 })
 
-router.post('/', upload.single('file'), async (req, res)=>{
+router.post('/upload', upload.single('file'), async (req, res)=>{
     const now = new Date();
     
     const newPost = new Post({
@@ -67,6 +69,33 @@ router.post('/', upload.single('file'), async (req, res)=>{
     
     res.json({"body": req.key })
 })
+
+
+router.delete('/post/:id', async (res, res)=>{
+    try {
+        const postId = req.params.id;   
+
+        const post = await Post.findById(postId);
+
+        if (!post) {
+            return res.status(404).send('Post not found'); 
+        }
+        
+        fs.unlink(__dirname + `/public/uploads/${post.filename}`, (err) => {
+            if (err) throw err;  
+            console.log(`[DEBUG]> Successful deletion of file ${post.filename}`);
+        });
+
+        await Post.deleteOne({ _id: postId });
+
+        res.status(200).send('Post deleted successfully');  
+        console.log(`[DEBUG]> Successful deletion of ID ${postId}`);
+    } catch (error) {
+        console.error(error);  
+        res.status(500).send('Internal Server Error');  
+    }
+})
+
 
 
 export default router;
