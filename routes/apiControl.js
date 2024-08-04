@@ -71,7 +71,7 @@ router.post('/upload', upload.single('file'), async (req, res)=>{
 })
 
 
-router.delete('/post/:id', async (res, res)=>{
+router.delete('/post/:id', async (req, res)=>{
     try {
         const postId = req.params.id;   
 

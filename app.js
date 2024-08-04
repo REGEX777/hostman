@@ -20,6 +20,7 @@ import userRoute from './routes/Home.js'
 import keyDetails from './routes/keyDetails.js'
 import embedEditor from './routes/embedEditor.js'
 import apiControl from './routes/apiControl.js'
+import postPage from './routes/postPage.js'
 
 const PORT = process.env.PORT
 
@@ -35,6 +36,8 @@ app.use('/', userRoute)
 app.use('/apidetails', keyDetails)
 app.use('/embedEditor', embedEditor)
 app.use('/api', apiControl)
+app.use('/post', postPage)
+
 
 app.listen(PORT, ()=>{
     console.log(`[+] Server Running On Port ${PORT}`.green)
