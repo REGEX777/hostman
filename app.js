@@ -81,6 +81,7 @@ import apiControl from './routes/apiControl.js';
 import postPage from './routes/postPage.js';
 import signupRoute from './routes/Signup.js';
 import loginRoute from './routes/Login.js';
+import uploadRoute from './routes/Upload.js';
 
 app.use('/', userRoute);
 app.use('/apidetails', keyDetails);
@@ -89,6 +90,7 @@ app.use('/api', apiControl);
 app.use('/post', postPage);
 app.use('/signup', signupRoute); 
 app.use('/login', loginRoute); 
+app.use('/upload', uploadRoute); 
 
 const PORT = process.env.PORT;
 app.listen(PORT, () => {
