@@ -2,6 +2,7 @@ import 'dotenv/config'
 // Important Imports
 import express from 'express';
 import ejs from 'ejs';
+import multer from 'multer';
 
 // Extra Imports
 import colors from 'colors';
