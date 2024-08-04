@@ -24,6 +24,10 @@
                 <span>Drag & Drop your image here or click to select</span>
                 <input type="file" name="file" id="fileInput" accept="image/*" class="hidden">
             </div>
+            <div id="previewContainer" class="hidden mt-4">
+                <img id="imagePreview" src="#" alt="Image Preview" class="w-full rounded-lg" />
+                <p id="fileName" class="text-gray-600 mt-2"></p>
+            </div>
             <button type="submit" class="w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700">Upload</button>
         </form>
     </div>
@@ -32,6 +36,9 @@
         const dropzone = document.getElementById('dropzone');
         const fileInput = document.getElementById('fileInput');
         const uploadForm = document.getElementById('uploadForm');
+        const previewContainer = document.getElementById('previewContainer');
+        const imagePreview = document.getElementById('imagePreview');
+        const fileName = document.getElementById('fileName');
 
         dropzone.addEventListener('dragover', (e) => {
             e.preventDefault();
@@ -48,6 +55,7 @@
             const files = e.dataTransfer.files;
             if (files.length > 0) {
                 fileInput.files = files;
+                showImagePreview(files[0]);
             }
         });
 
@@ -57,9 +65,19 @@
 
         fileInput.addEventListener('change', () => {
             if (fileInput.files.length > 0) {
-                dropzone.querySelector('span').textContent = fileInput.files[0].name;
+                showImagePreview(fileInput.files[0]);
             }
         });
+
+        function showImagePreview(file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                imagePreview.src = e.target.result;
+                previewContainer.classList.remove('hidden');
+            };
+            reader.readAsDataURL(file);
+            fileName.textContent = file.name;
+        }
     </script>
 </body>
 </html>
