@@ -1,12 +1,17 @@
 import express from 'express';
 import bcrypt from 'bcryptjs';
-import User from '../models/User.js';
-import passport from 'passport';
-
+import User from '../models/User.js'; 
 const router = express.Router();
 
+// Signup route
 router.post('/signup', async (req, res) => {
     try {
+        // Check if a user already exists
+        const existingUser = await User.findOne();
+        if (existingUser) {
+            return res.status(403).json({ message: 'Signup disabled. User already exists.' });
+        }
+
         const { email, password } = req.body;
         const hashedPassword = await bcrypt.hash(password, 10);
 
