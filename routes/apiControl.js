@@ -1,6 +1,7 @@
 import multer from 'multer';
 import {v4 as uuidv4} from 'uuid';
 import express from 'express';
+import mongoose from 'mongoose';
 
 
 const router = express.Router();
@@ -17,7 +18,7 @@ const storage = multer.diskStorage({
 })
 
 const upload = multer({
-    storage: multer
+    storage: storage
 })
 
 
@@ -27,10 +28,10 @@ router.get("/", (req, res)=>{
     res.json({"error": "Req type not supported."})
 })
 
-router.post('/', (req, res)=>{
-    console.log(req.body);
+router.post('/', upload.single('file'), (req, res)=>{
+    console.log(req.file);
     
-    res.json({"body": req.body })
+    res.json({"body": req.key })
 })
 
 
