@@ -12,7 +12,7 @@ const postSchema = new mongoose.Schema({
         required: true,
         trim: true
     },
-    fileUploadTIme: {
+    fileUploadTime: {
         type: Date, 
         required: true,
         trim: true
