@@ -690,6 +690,10 @@ video {
   width: 100%;
 }
 
+.max-w-\[50\%\] {
+  max-width: 50%;
+}
+
 .flex-grow {
   flex-grow: 1;
 }

@@ -1,14 +1,14 @@
 <%- include('partials/nav') -%>
 
-    
-    <!-- Main Body -->
-    <div class="flex grow w-full mt-[4rem]">
-        <%- include('partials/sidebar') -%>
-        <div class="flex-grow ml-[5%] overflow-auto">
-            <div class="flex items-center justify-center w-full bg-[#000000]">
-                <div class="grid grid-cols-3 w-[90%] items-center justify-center gap-10 py-10">
+<!-- Main Body -->
+<div class="flex grow w-full mt-[4rem]">
+    <%- include('partials/sidebar') -%>
+    <div class="flex-grow ml-[5%] overflow-auto">
+        <div class="flex items-center justify-center w-full bg-[#000000]">
+            <div class="grid grid-cols-3 w-[90%] items-center justify-center gap-10 py-10">
+                <% posts.forEach((post) => { %>
                     <div class="w-full flex-col items-center justify-center min-h-[20rem] bg-[#151313] rounded-lg">
-                        <img src="images/temp.png" class="w-full" alt="" srcset="">
+                        <img src="/uploads/<%= post.fileName %>" class="w-full" alt="" srcset="">
                         <div class="flex items-center justify-center">
                             <div class="flex flex-row items-center justify-center gap-3 py-5">
                                 <div class="flex items-center justify-center p-[0.7rem] bg-[#8B174352] rounded-lg text-[#FB2576]">
@@ -23,34 +23,31 @@
                             </div>
                         </div>
                         <div class="flex flex-col items-center justify-center w-full mb-5">
-                            <p class="text-xl font-semibold text-white">e4co.png</p>
-                            <p class="text-[#777777]">Uploaded at 14/03/26</p>
+                            <p class="text-xl font-semibold text-white"><%= post.fileName %></p>
+                            <p class="text-[#777777]">Uploaded at <span class="upload-time" data-time="<%= post.fileUploadTime %>"></span></p>
                         </div>
                     </div>
-                    <div class="w-full flex-col items-center justify-center min-h-[20rem] bg-[#151313] rounded-lg">
-                        <img src="images/temp.png" class="w-full" alt="" srcset="">
-                        <div class="flex items-center justify-center">
-                            <div class="flex flex-row items-center justify-center gap-3 py-5">
-                                <div class="flex items-center justify-center p-[0.7rem] bg-[#8B174352] rounded-lg text-[#FB2576]">
-                                    <i class="fa-solid fa-copy"></i>
-                                </div>
-                                <div class="flex items-center justify-center p-[0.7rem] bg-[#8B174352] rounded-lg text-[#FB2576]">
-                                    <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                                </div>
-                                <div class="flex items-center justify-center p-[0.7rem] bg-[#8B174352] rounded-lg text-[#FB2576]">
-                                    <i class="fa-solid fa-trash-can"></i>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="flex flex-col items-center justify-center w-full mb-5">
-                            <p class="text-xl font-semibold text-white">e4co.png</p>
-                            <p class="text-[#777777]">Uploaded at 14/03/26</p>
-                        </div>
-                    </div>
-                </div>
+                <% }); %>
             </div>
         </div>
     </div>
-</body>
+</div>
 
-</html>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const timeElements = document.querySelectorAll('.upload-time');
+        timeElements.forEach(el => {
+            const rawTime = el.getAttribute('data-time');
+            const date = new Date(rawTime);
+            const formattedDate = date.toLocaleString('en-US', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            });
+            el.textContent = formattedDate;
+        });
+    });
+</script>

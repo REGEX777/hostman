@@ -4,16 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body class="bg-[#161F29]">
     <div class="flex h-screen items-center justify-start flex-col">
         <br>
-        <img class="rounded-lg" src="images/temp.png" alt="" srcset="">
+        <img class="rounded-lg max-w-[50%]" src="/uploads/15d2b949-bb20-44a4-a57a-3f3422196afb.jpg" alt="" srcset="">
         <br>
-        <p class="text-white text-2xl">Title</p>
-        <p class="text-white"> dd<%= //(img.fileSize/1024).toFixed(10) %>MB Used</p>
-        <p class="text-white">Uploaded On ss<%= //img.time %></p>
+        <p class="text-white text-2xl"><%= post.fileName %></p>
+        <p class="text-white">Uploaded On <%= post.fileUploadTime %></p>
     </div>
 </body>
 </html>
