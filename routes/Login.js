@@ -3,7 +3,11 @@ import passport from 'passport';
 
 const router = express.Router();
 
-router.post('/login', passport.authenticate('local', {
+router.get('/', (req, res) => {
+    res.render('login');
+});
+
+router.post('/', passport.authenticate('local', {
     successRedirect: '/', 
     failureRedirect: '/login', 
     failureFlash: true 

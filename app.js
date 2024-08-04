@@ -87,8 +87,8 @@ app.use('/apidetails', keyDetails);
 app.use('/embedEditor', embedEditor);
 app.use('/api', apiControl);
 app.use('/post', postPage);
-app.use('/auth', signupRoute); 
-app.use('/auth', loginRoute); 
+app.use('/signup', signupRoute); 
+app.use('/login', loginRoute); 
 
 const PORT = process.env.PORT;
 app.listen(PORT, () => {

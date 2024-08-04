@@ -4,7 +4,12 @@ import User from '../models/User.js';
 const router = express.Router();
 
 // Signup route
-router.post('/signup', async (req, res) => {
+router.get('/', (req, res) => {
+    res.render('signup');
+});
+
+
+router.post('/', async (req, res) => {
     try {
         // Check if a user already exists
         const existingUser = await User.findOne();
