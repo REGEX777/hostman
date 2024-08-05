@@ -19,6 +19,11 @@
 <body class="bg-gray-100 flex items-center justify-center min-h-screen">
     <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
         <h2 class="text-2xl font-bold mb-6 text-center">Upload Image</h2>
+        <div id="progressContainer" class="hidden mt-4">
+            <div class="w-full bg-gray-200 rounded-full">
+                <div id="progressBar" class="bg-indigo-600 text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full" style="width: 0%">0%</div>
+            </div>
+        </div>
         <form id="uploadForm" action="/upload" method="POST" enctype="multipart/form-data" class="space-y-6">
             <div id="dropzone" class="dropzone p-6 flex items-center justify-center text-gray-600">
                 <span>Drag & Drop your image here or click to select</span>
@@ -27,6 +32,8 @@
             <div id="previewContainer" class="hidden mt-4">
                 <img id="imagePreview" src="#" alt="Image Preview" class="w-full rounded-lg" />
                 <p id="fileName" class="text-gray-600 mt-2"></p>
+                <p id="fileSize" class="text-gray-600 mt-2"></p>
+                <p id="fileDimensions" class="text-gray-600 mt-2"></p>
             </div>
             <button type="submit" class="w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700">Upload</button>
         </form>
@@ -39,6 +46,10 @@
         const previewContainer = document.getElementById('previewContainer');
         const imagePreview = document.getElementById('imagePreview');
         const fileName = document.getElementById('fileName');
+        const fileSize = document.getElementById('fileSize');
+        const fileDimensions = document.getElementById('fileDimensions');
+        const progressContainer = document.getElementById('progressContainer');
+        const progressBar = document.getElementById('progressBar');
 
         dropzone.addEventListener('dragover', (e) => {
             e.preventDefault();
@@ -74,10 +85,53 @@
             reader.onload = (e) => {
                 imagePreview.src = e.target.result;
                 previewContainer.classList.remove('hidden');
+                
+                // Display file size
+                fileSize.textContent = `Size: ${(file.size / 1024).toFixed(2)} KB`;
+
+                // Display image dimensions
+                const img = new Image();
+                img.onload = () => {
+                    fileDimensions.textContent = `Dimensions: ${img.width}x${img.height}`;
+                };
+                img.src = e.target.result;
             };
             reader.readAsDataURL(file);
             fileName.textContent = file.name;
         }
+
+        uploadForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const formData = new FormData(uploadForm);
+            const xhr = new XMLHttpRequest();
+
+            xhr.open('POST', '/upload', true);
+
+            xhr.upload.onprogress = (e) => {
+                if (e.lengthComputable) {
+                    const percentComplete = (e.loaded / e.total) * 100;
+                    progressBar.style.width = percentComplete + '%';
+                    progressBar.textContent = Math.round(percentComplete) + '%';
+                }
+            };
+
+            xhr.onload = () => {
+                if (xhr.status === 200) {
+                    alert('Upload successful!');
+                    progressContainer.classList.add('hidden');
+                } else {
+                    alert('Upload failed.');
+                }
+            };
+
+            xhr.onerror = () => {
+                alert('Upload failed.');
+            };
+
+            progressContainer.classList.remove('hidden');
+            xhr.send(formData);
+        });
     </script>
 </body>
 </html>
