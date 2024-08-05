@@ -33,14 +33,23 @@
             border-radius: 50%;
             cursor: pointer;
         }
+        #progressContainer {
+            margin-top: 20px;
+        }
+        #progressBar {
+            background-color: #4A5568;
+            height: 1rem;
+            border-radius: 0.5rem;
+            transition: width 0.4s ease;
+        }
     </style>
 </head>
 <body class="bg-gray-100 flex items-center justify-center min-h-screen">
     <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-2xl">
         <h2 class="text-2xl font-bold mb-6 text-center">Upload Images</h2>
-        <div id="progressContainer" class="hidden mt-4">
+        <div id="progressContainer" class="hidden">
             <div class="w-full bg-gray-200 rounded-full">
-                <div id="progressBar" class="bg-indigo-600 text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full" style="width: 0%">0%</div>
+                <div id="progressBar" class="text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full" style="width: 0%">0%</div>
             </div>
         </div>
         <form id="uploadForm" action="/upload" method="POST" enctype="multipart/form-data" class="space-y-6">
@@ -114,9 +123,9 @@
         }
 
         thumbnails.addEventListener('click', (e) => {
-            if (e.target.classList.contains('remove-btn')) {
-                const fileName = e.target.getAttribute('data-file');
-                const thumbnail = e.target.parentElement;
+            if (e.target.closest('.remove-btn')) {
+                const fileName = e.target.closest('.remove-btn').getAttribute('data-file');
+                const thumbnail = e.target.closest('.thumbnail');
                 thumbnail.remove();
                 const filesArray = Array.from(fileInput.files);
                 const filteredFiles = filesArray.filter(file => file.name !== fileName);
