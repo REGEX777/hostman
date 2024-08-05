@@ -50,26 +50,33 @@ router.get("/", (req, res)=>{
     res.json({"error": "Req type not supported."})
 })
 
-router.post('/upload', upload.single('file'), async (req, res)=>{
+
+
+router.post('/upload', upload.array('files', 10), async (req, res) => {
     const now = new Date();
+    const uploadIp = req.ip;
     
-    const newPost = new Post({
-        fileName: req.file.filename,
-        fileSize: req.file.size,
-        fileUploadTime: now,
-        fileUploadIp: req.ip
-    })
+    if (!req.files) {
+        return res.status(400).send('No files were uploaded.');
+    }
 
-    await newPost.save().then(()=>{
-        console.log(`[INFORMATION]> Image uploaded succesfully and the details were saved in the database.`)
-    }).catch(err=>console.log(err))
+    try {
+        const posts = req.files.map(file => ({
+            fileName: file.filename,
+            fileSize: file.size,
+            fileUploadTime: now,
+            fileUploadIp: uploadIp
+        }));
 
-    console.log(Date);
-    console.log(req.file.filename);
-    
-    res.json({"body": req.key })
-})
+        await Post.insertMany(posts);
+        console.log('[INFORMATION]> Images uploaded successfully and details were saved in the database.');
 
+        res.json({ message: 'Files have been uploaded successfully.', files: req.files });
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Server error.');
+    }
+});
 
 router.delete('/post/:id', async (req, res)=>{
     try {

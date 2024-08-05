@@ -90,7 +90,6 @@ app.use('/api', apiControl);
 app.use('/post', postPage);
 app.use('/signup', signupRoute); 
 app.use('/login', loginRoute); 
-app.use('/upload', uploadRoute); 
 
 const PORT = process.env.PORT;
 app.listen(PORT, () => {
