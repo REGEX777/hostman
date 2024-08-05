@@ -14,11 +14,30 @@
         .dropzone.dragging {
             border-color: #2D3748;
         }
+        .thumbnail {
+            position: relative;
+            display: inline-block;
+            margin: 10px;
+        }
+        .thumbnail img {
+            border-radius: 0.5rem;
+            max-width: 150px;
+            max-height: 150px;
+        }
+        .remove-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: rgba(255, 255, 255, 0.8);
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body class="bg-gray-100 flex items-center justify-center min-h-screen">
-    <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
-        <h2 class="text-2xl font-bold mb-6 text-center">Upload Image</h2>
+    <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-2xl">
+        <h2 class="text-2xl font-bold mb-6 text-center">Upload Images</h2>
         <div id="progressContainer" class="hidden mt-4">
             <div class="w-full bg-gray-200 rounded-full">
                 <div id="progressBar" class="bg-indigo-600 text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full" style="width: 0%">0%</div>
@@ -26,14 +45,11 @@
         </div>
         <form id="uploadForm" action="/upload" method="POST" enctype="multipart/form-data" class="space-y-6">
             <div id="dropzone" class="dropzone p-6 flex items-center justify-center text-gray-600">
-                <span>Drag & Drop your image here or click to select</span>
-                <input type="file" name="file" id="fileInput" accept="image/*" class="hidden">
+                <span>Drag & Drop your images here or click to select</span>
+                <input type="file" name="files" id="fileInput" accept="image/*" multiple class="hidden">
             </div>
             <div id="previewContainer" class="hidden mt-4">
-                <img id="imagePreview" src="#" alt="Image Preview" class="w-full rounded-lg" />
-                <p id="fileName" class="text-gray-600 mt-2"></p>
-                <p id="fileSize" class="text-gray-600 mt-2"></p>
-                <p id="fileDimensions" class="text-gray-600 mt-2"></p>
+                <div id="thumbnails" class="flex flex-wrap"></div>
             </div>
             <button type="submit" class="w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700">Upload</button>
         </form>
@@ -44,10 +60,7 @@
         const fileInput = document.getElementById('fileInput');
         const uploadForm = document.getElementById('uploadForm');
         const previewContainer = document.getElementById('previewContainer');
-        const imagePreview = document.getElementById('imagePreview');
-        const fileName = document.getElementById('fileName');
-        const fileSize = document.getElementById('fileSize');
-        const fileDimensions = document.getElementById('fileDimensions');
+        const thumbnails = document.getElementById('thumbnails');
         const progressContainer = document.getElementById('progressContainer');
         const progressBar = document.getElementById('progressBar');
 
@@ -65,8 +78,7 @@
             dropzone.classList.remove('dragging');
             const files = e.dataTransfer.files;
             if (files.length > 0) {
-                fileInput.files = files;
-                showImagePreview(files[0]);
+                handleFiles(files);
             }
         });
 
@@ -76,29 +88,43 @@
 
         fileInput.addEventListener('change', () => {
             if (fileInput.files.length > 0) {
-                showImagePreview(fileInput.files[0]);
+                handleFiles(fileInput.files);
             }
         });
 
-        function showImagePreview(file) {
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                imagePreview.src = e.target.result;
-                previewContainer.classList.remove('hidden');
-                
-                // Display file size
-                fileSize.textContent = `Size: ${(file.size / 1024).toFixed(2)} KB`;
-
-                // Display image dimensions
-                const img = new Image();
-                img.onload = () => {
-                    fileDimensions.textContent = `Dimensions: ${img.width}x${img.height}`;
+        function handleFiles(files) {
+            previewContainer.classList.remove('hidden');
+            for (const file of files) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const thumbnail = document.createElement('div');
+                    thumbnail.classList.add('thumbnail');
+                    thumbnail.innerHTML = `
+                        <img src="${e.target.result}" alt="Image Preview" />
+                        <button class="remove-btn" data-file="${file.name}">
+                            <i class="fas fa-times"></i>
+                        </button>
+                        <p class="text-gray-600 mt-2">${file.name}</p>
+                        <p class="text-gray-600 mt-2">Size: ${(file.size / 1024).toFixed(2)} KB</p>
+                    `;
+                    thumbnails.appendChild(thumbnail);
                 };
-                img.src = e.target.result;
-            };
-            reader.readAsDataURL(file);
-            fileName.textContent = file.name;
+                reader.readAsDataURL(file);
+            }
         }
+
+        thumbnails.addEventListener('click', (e) => {
+            if (e.target.classList.contains('remove-btn')) {
+                const fileName = e.target.getAttribute('data-file');
+                const thumbnail = e.target.parentElement;
+                thumbnail.remove();
+                const filesArray = Array.from(fileInput.files);
+                const filteredFiles = filesArray.filter(file => file.name !== fileName);
+                const dataTransfer = new DataTransfer();
+                filteredFiles.forEach(file => dataTransfer.items.add(file));
+                fileInput.files = dataTransfer.files;
+            }
+        });
 
         uploadForm.addEventListener('submit', (e) => {
             e.preventDefault();
@@ -120,6 +146,9 @@
                 if (xhr.status === 200) {
                     alert('Upload successful!');
                     progressContainer.classList.add('hidden');
+                    previewContainer.classList.add('hidden');
+                    thumbnails.innerHTML = '';
+                    fileInput.value = '';
                 } else {
                     alert('Upload failed.');
                 }
