@@ -19,10 +19,10 @@
 <body class="bg-gray-100 flex items-center justify-center min-h-screen">
     <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
         <h2 class="text-2xl font-bold mb-6 text-center">Upload Image</h2>
-        <form id="uploadForm" action="/api/upload" method="POST" enctype="multipart/form-data" class="space-y-6">
+        <form id="uploadForm" action="/upload" method="POST" enctype="multipart/form-data" class="space-y-6">
             <div id="dropzone" class="dropzone p-6 flex items-center justify-center text-gray-600">
                 <span>Drag & Drop your image here or click to select</span>
-                <input type="file" name="file" id="fileInput" accept="image/*" class="hidden">
+                <input type="file" name="files" id="fileInput" accept="image/*" multiple class="hidden">
             </div>
             <div id="previewContainer" class="hidden mt-4">
                 <img id="imagePreview" src="#" alt="Image Preview" class="w-full rounded-lg" />
@@ -30,6 +30,7 @@
             </div>
             <button type="submit" class="w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700">Upload</button>
         </form>
+        <div id="uploadResult" class="mt-4 text-center"></div>
     </div>
 
     <script>
@@ -39,6 +40,7 @@
         const previewContainer = document.getElementById('previewContainer');
         const imagePreview = document.getElementById('imagePreview');
         const fileName = document.getElementById('fileName');
+        const uploadResult = document.getElementById('uploadResult');
 
         dropzone.addEventListener('dragover', (e) => {
             e.preventDefault();
@@ -78,6 +80,25 @@
             reader.readAsDataURL(file);
             fileName.textContent = file.name;
         }
+
+        uploadForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(uploadForm);
+            try {
+                const response = await fetch('/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+                const result = await response.json();
+                if (response.ok) {
+                    uploadResult.innerHTML = '<p class="text-green-500">Files have been uploaded successfully.</p>';
+                } else {
+                    uploadResult.innerHTML = `<p class="text-red-500">Error: ${result.message || 'Server error.'}</p>`;
+                }
+            } catch (error) {
+                uploadResult.innerHTML = '<p class="text-red-500">Error: Server error.</p>';
+            }
+        });
     </script>
 </body>
 </html>
