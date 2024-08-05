@@ -3,11 +3,21 @@ import { v4 as uuidv4 } from 'uuid';
 import express from 'express';
 import path from 'path';
 import fs from 'fs';
+import flash from 'connect-flash';
+import session from 'express-session';
+import mongoose from 'mongoose';
+import mime from 'mime-types';
 
-// Model Import
 import Post from '../models/Post.js';
 
 const router = express.Router();
+
+router.use(session({
+    secret: 'your_secret_key',
+    resave: false,
+    saveUninitialized: true
+}));
+router.use(flash());
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -37,8 +47,14 @@ const upload = multer({
     fileFilter: fileFilter
 });
 
-router.get("/", (req, res) => {
-    res.render('upload', { message: req.flash('message') });
+router.get("/", async (req, res) => {
+    try {
+        const posts = await Post.find().sort({ fileUploadTime: -1 });
+        res.render('upload', { message: req.flash('message'), posts });
+    } catch (error) {
+        req.flash('message', 'Error fetching posts');
+        res.redirect('/');
+    }
 });
 
 router.post('/upload', upload.array('files', 10), async (req, res) => {
@@ -55,7 +71,8 @@ router.post('/upload', upload.array('files', 10), async (req, res) => {
             fileName: file.filename,
             fileSize: file.size,
             fileUploadTime: now,
-            fileUploadIp: uploadIp
+            fileUploadIp: uploadIp,
+            fileType: mime.lookup(file.originalname)
         }));
 
         await Post.insertMany(posts);
@@ -89,6 +106,24 @@ router.delete('/post/:id', async (req, res) => {
         res.redirect('/');
     } catch (error) {
         req.flash('message', 'Internal Server Error');
+        res.redirect('/');
+    }
+});
+
+router.get('/download/:id', async (req, res) => {
+    try {
+        const postId = req.params.id;
+        const post = await Post.findById(postId);
+
+        if (!post) {
+            req.flash('message', 'File not found');
+            return res.redirect('/');
+        }
+
+        const filePath = path.join(__dirname, `/public/uploads/${post.fileName}`);
+        res.download(filePath, post.fileName);
+    } catch (error) {
+        req.flash('message', 'Error downloading file');
         res.redirect('/');
     }
 });
