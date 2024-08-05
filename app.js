@@ -8,6 +8,8 @@ import passport from 'passport';
 import LocalStrategy from 'passport-local';
 import bcrypt from 'bcryptjs';
 import User from './models/User.js'; 
+import flash from 'connect-flash';
+
 
 // Database Initialization ssssss
 mongoose.connect(process.env.MONGO_URI)
@@ -26,6 +28,13 @@ app.set('view engine', 'ejs');
 app.use(express.static('public'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(flash());
+
+app.use((req, res, next) => {
+    res.locals.successMessages = req.flash('success');
+    res.locals.errorMessages = req.flash('error');
+    next();
+});
 
 app.use(session({
     secret: process.env.SESSION_SECRET,
@@ -90,6 +99,7 @@ app.use('/api', apiControl);
 app.use('/post', postPage);
 app.use('/signup', signupRoute); 
 app.use('/login', loginRoute); 
+app.use('/upload', uploadRoute); 
 
 const PORT = process.env.PORT;
 app.listen(PORT, () => {

@@ -1,17 +1,22 @@
-import express from 'express';
 import multer from 'multer';
+import { v4 as uuidv4 } from 'uuid';
+import express from 'express';
 import path from 'path';
-import Post from '../models/Post.js'; 
+import fs from 'fs';
+
+// Model Import
+import Post from '../models/Post.js';
 
 const router = express.Router();
 
-// Configure Multer
 const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, 'uploads/');
+    destination: function (req, file, cb) {
+        cb(null, 'public/uploads/');
     },
-    filename: (req, file, cb) => {
-        cb(null, Date.now() + path.extname(file.originalname));
+    filename: function (req, file, cb) {
+        const extension = file.originalname.split('.').pop();
+        const name = `${uuidv4()}.${extension}`;
+        cb(null, name);
     }
 });
 
@@ -23,39 +28,69 @@ const fileFilter = (req, file, cb) => {
     if (extname && mimetype) {
         return cb(null, true);
     } else {
-        cb('Error: Images Only!');
+        cb(new Error('Invalid file type. Only image files are allowed.'));
     }
 };
 
 const upload = multer({
     storage: storage,
-    fileFilter: fileFilter,
-    limits: { fileSize: 1024 * 1024 * 5 } // 5MB limit
+    fileFilter: fileFilter
 });
 
-// GET upload page
-router.get('/', (req, res) => {
-    res.render('upload');
+router.get("/", (req, res) => {
+    res.render('upload', { message: req.flash('message') });
 });
 
-// POST upload route
-router.post('/', upload.single('file'), async (req, res) => {
+router.post('/upload', upload.array('files', 10), async (req, res) => {
     const now = new Date();
-    
-    const newPost = new Post({
-        fileName: req.file.filename,
-        fileSize: req.file.size,
-        fileUploadTime: now,
-        fileUploadIp: req.ip
-    });
+    const uploadIp = req.ip;
 
-    await newPost.save()
-        .then(() => {
-            console.log(`[INFORMATION]> Image uploaded successfully and the details were saved in the database.`);
-        })
-        .catch(err => console.log(err));
+    if (!req.files || req.files.length === 0) {
+        req.flash('message', 'No files were uploaded.');
+        return res.redirect('/');
+    }
 
-    res.redirect('/upload');
+    try {
+        const posts = req.files.map(file => ({
+            fileName: file.filename,
+            fileSize: file.size,
+            fileUploadTime: now,
+            fileUploadIp: uploadIp
+        }));
+
+        await Post.insertMany(posts);
+        req.flash('message', 'Files have been uploaded successfully.');
+        res.redirect('/');
+    } catch (err) {
+        req.flash('message', 'Server error.');
+        res.redirect('/');
+    }
+});
+
+router.delete('/post/:id', async (req, res) => {
+    try {
+        const postId = req.params.id;
+
+        const post = await Post.findById(postId);
+
+        if (!post) {
+            req.flash('message', 'Post not found');
+            return res.redirect('/');
+        }
+
+        fs.unlink(__dirname + `/public/uploads/${post.filename}`, (err) => {
+            if (err) throw err;
+            console.log(`[DEBUG]> Successful deletion of file ${post.filename}`);
+        });
+
+        await Post.deleteOne({ _id: postId });
+
+        req.flash('message', 'Post deleted successfully');
+        res.redirect('/');
+    } catch (error) {
+        req.flash('message', 'Internal Server Error');
+        res.redirect('/');
+    }
 });
 
 export default router;
