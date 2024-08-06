@@ -10,6 +10,7 @@
         .dropzone {
             border: 2px dashed #4A5568;
             border-radius: 0.5rem;
+            transition: border-color 0.2s;
         }
         .dropzone.dragging {
             border-color: #2D3748;
@@ -36,11 +37,28 @@
         .file-actions a:hover, .file-actions button:hover {
             background-color: #45a049;
         }
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+        }
+        .lightbox img {
+            max-width: 80%;
+            max-height: 80%;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        }
     </style>
 </head>
 <body class="bg-gray-100 flex items-center justify-center min-h-screen">
-    <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-4xl">
-        <h2 class="text-2xl font-bold mb-6 text-center">Upload and Manage Files</h2>
+    <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
+        <h2 class="text-2xl font-bold mb-6 text-center">Upload Image</h2>
         <form id="uploadForm" action="/upload" method="POST" enctype="multipart/form-data" class="space-y-6">
             <div id="dropzone" class="dropzone p-6 flex items-center justify-center text-gray-600">
                 <span>Drag & Drop your image here or click to select</span>
@@ -52,43 +70,23 @@
             </div>
             <button type="submit" class="w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700">Upload</button>
         </form>
-        <div id="flashMessages" class="mt-4 text-center">
-            <% if (message && message.length > 0) { %>
-                <p class="text-green-500"><%= message %></p>
-            <% } %>
-        </div>
-        <div id="fileList" class="mt-6">
-            <% if (posts && posts.length > 0) { %>
-                <h3 class="text-xl font-semibold mb-2">Uploaded Files</h3>
-                <ul>
-                    <% posts.forEach(post => { %>
-                        <li class="file-details">
-                            <div>
-                                <p><strong>Name:</strong> <%= post.fileName %></p>
-                                <p><strong>Size:</strong> <%= (post.fileSize / 1024).toFixed(2) %> KB</p>
-                                <p><strong>Type:</strong> <%= post.fileType %></p>
-                                <p><strong>Uploaded At:</strong> <%= new Date(post.fileUploadTime).toLocaleString() %></p>
-                            </div>
-                            <div class="file-actions">
-                                <a href="/download/<%= post._id %>" class="text-white bg-blue-500 hover:bg-blue-600">Download</a>
-                                <button data-id="<%= post._id %>" class="delete-file ml-2 text-white bg-red-500 hover:bg-red-600">Delete</button>
-                            </div>
-                        </li>
-                    <% }) %>
-                </ul>
-            <% } else { %>
-                <p>No files uploaded yet.</p>
-            <% } %>
-        </div>
+        <div id="uploadResult" class="mt-4 text-center"></div>
+    </div>
+
+    <div id="lightbox" class="lightbox">
+        <img id="lightboxImage" src="#" alt="Lightbox Image" />
     </div>
 
     <script>
         const dropzone = document.getElementById('dropzone');
         const fileInput = document.getElementById('fileInput');
+        const uploadForm = document.getElementById('uploadForm');
         const previewContainer = document.getElementById('previewContainer');
         const imagePreview = document.getElementById('imagePreview');
         const fileName = document.getElementById('fileName');
-        const flashMessages = document.getElementById('flashMessages');
+        const uploadResult = document.getElementById('uploadResult');
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImage = document.getElementById('lightboxImage');
 
         dropzone.addEventListener('dragover', (e) => {
             e.preventDefault();
@@ -129,6 +127,62 @@
             fileName.textContent = file.name;
         }
 
+        uploadForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(uploadForm);
+            try {
+                const response = await fetch('/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+                const result = await response.json();
+                if (response.ok) {
+                    uploadResult.innerHTML = '<p class="text-green-500">Files have been uploaded successfully.</p>';
+                    displayUploadedFiles(result.files);
+                } else {
+                    uploadResult.innerHTML = `<p class="text-red-500">Error: ${result.message || 'Server error.'}</p>`;
+                }
+            } catch (error) {
+                uploadResult.innerHTML = `<p class="text-red-500">Error: ${error} Server error.</p>`;
+            }
+        });
+
+        function displayUploadedFiles(files) {
+            const container = document.createElement('div');
+            files.forEach(file => {
+                const fileDetail = document.createElement('div');
+                fileDetail.className = 'file-details';
+
+                const fileInfo = document.createElement('div');
+                fileInfo.innerHTML = `
+                    <p><strong>Name:</strong> ${file.fileName}</p>
+                    <p><strong>Size:</strong> ${(file.fileSize / 1024).toFixed(2)} KB</p>
+                    <p><strong>Type:</strong> ${file.fileType}</p>
+                    <p><strong>Uploaded:</strong> ${new Date(file.fileUploadTime).toLocaleString()}</p>
+                `;
+                fileDetail.appendChild(fileInfo);
+
+                const fileActions = document.createElement('div');
+                fileActions.className = 'file-actions';
+                const downloadLink = document.createElement('a');
+                downloadLink.href = `/public/uploads/${file.fileName}`;
+                downloadLink.textContent = 'Download';
+                downloadLink.target = '_blank';
+                fileActions.appendChild(downloadLink);
+
+                const deleteButton = document.createElement('button');
+                deleteButton.className = 'delete-file';
+                deleteButton.setAttribute('data-id', file._id);
+                deleteButton.textContent = 'Delete';
+                fileActions.appendChild(deleteButton);
+
+                fileDetail.appendChild(fileActions);
+
+                container.appendChild(fileDetail);
+            });
+            uploadResult.appendChild(container);
+        }
+
         document.addEventListener('click', async (e) => {
             if (e.target && e.target.classList.contains('delete-file')) {
                 const fileId = e.target.getAttribute('data-id');
@@ -145,7 +199,14 @@
                 } catch (error) {
                     flashMessages.innerHTML = `<p class="text-red-500">Error: ${error}</p>`;
                 }
+            } else if (e.target && e.target.tagName === 'IMG') {
+                lightboxImage.src = e.target.src;
+                lightbox.style.display = 'flex';
             }
+        });
+
+        lightbox.addEventListener('click', () => {
+            lightbox.style.display = 'none';
         });
     </script>
 </body>

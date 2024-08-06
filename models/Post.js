@@ -1,30 +1,11 @@
-import mongoose, { mongo } from "mongoose";
-
+import mongoose from 'mongoose';
 
 const postSchema = new mongoose.Schema({
-    fileName: {
-        type: String,
-        required: true,
-        trim: true
-    },
-    fileSize: {
-        type: String,
-        required: true,
-        trim: true
-    },
-    fileUploadTime: {
-        type: Date, 
-        required: true,
-        trim: true
-    },
-    fileUploadIp: {
-        type: String,
-        required: true,
-        trim: true 
-    }
-})
+    fileName: { type: String, required: true },
+    fileSize: { type: Number, required: true },
+    fileUploadTime: { type: Date, default: Date.now },
+    fileUploadIp: { type: String, required: true },
+    fileType: { type: String, required: true } // Add this field
+});
 
-const Post = mongoose.model('Post', postSchema);
-
-
-export default Post;
+export default mongoose.model('Post', postSchema);

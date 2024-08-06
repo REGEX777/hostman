@@ -37,6 +37,7 @@
     "express-session": "^1.18.0",
     "exrpess": "^0.0.1-security",
     "fs": "^0.0.1-security",
+    "mime-type": "^4.0.0",
     "mongoose": "^8.5.2",
     "multer": "^1.4.5-lts.1",
     "nodemon": "^3.1.4",

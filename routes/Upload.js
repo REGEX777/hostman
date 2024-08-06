@@ -72,7 +72,7 @@ router.post('/upload', upload.array('files', 10), async (req, res) => {
             fileSize: file.size,
             fileUploadTime: now,
             fileUploadIp: uploadIp,
-            fileType: mime.lookup(file.originalname)
+            fileType: mime.lookup(file.originalname) || 'application/octet-stream'
         }));
 
         await Post.insertMany(posts);
