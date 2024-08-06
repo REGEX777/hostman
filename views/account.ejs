@@ -38,6 +38,11 @@
             <p><strong>API Key:</strong> <%= user.apiKey %></p>
         </div>
         <div class="text-center mt-4">
+            <form id="regenerateApiKeyForm" action="/account/regenerate-api-key" method="POST">
+                <button type="submit" class="text-indigo-600 hover:text-indigo-400">Regenerate API Key</button>
+            </form>
+        </div>
+        <div class="text-center mt-4">
             <a href="/logout" class="text-indigo-600 hover:text-indigo-400">Logout</a>
         </div>
     </div>
