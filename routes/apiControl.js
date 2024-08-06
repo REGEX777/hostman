@@ -5,10 +5,13 @@ import mongoose from 'mongoose';
 import path from 'path'
 import fs from 'fs';
 
-
 // Model Import
 
 import Post from '../models/Post.js';
+import User from '../models/User.js'
+
+// Middleware
+import verifyApiKey from '../middleware/apiAuth.js'
 
 const router = express.Router();
 
@@ -52,11 +55,11 @@ router.get("/", (req, res)=>{
 
 
 
-router.post('/upload', upload.array('files', 10), async (req, res) => {
+router.post('/upload/:apiKey', verifyApiKey, upload.array('files', 10), async (req, res) => {
     const now = new Date();
     const uploadIp = req.ip;
-    
-    if (!req.files) {
+
+    if (!req.files || req.files.length === 0) {
         return res.status(400).send('No files were uploaded.');
     }
 
@@ -65,18 +68,19 @@ router.post('/upload', upload.array('files', 10), async (req, res) => {
             fileName: file.filename,
             fileSize: file.size,
             fileUploadTime: now,
-            fileUploadIp: uploadIp
+            fileUploadIp: uploadIp,
+            fileType: file.mimetype
         }));
 
         await Post.insertMany(posts);
         console.log('[INFORMATION]> Images uploaded successfully and details were saved in the database.');
-
         res.json({ message: 'Files have been uploaded successfully.', files: req.files });
     } catch (err) {
         console.error(err);
         res.status(500).send('Server error.');
     }
 });
+
 
 router.delete('/post/:id', async (req, res)=>{
     try {
