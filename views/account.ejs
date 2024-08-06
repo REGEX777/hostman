@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #1a202c;
+            color: #cbd5e0;
+        }
+        .card {
+            background-color: #2d3748;
+            border-radius: 0.5rem;
+            padding: 2rem;
+        }
+        .card-header {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+        .card-content {
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center">
+    <div class="card w-full max-w-lg">
+        <div class="card-header text-center">
+            Account Information
+        </div>
+        <div class="card-content">
+            <p><strong>Email:</strong> <%= user.email %></p>
+        </div>
+        <div class="card-content">
+            <p><strong>API Key:</strong> <%= user.apiKey %></p>
+        </div>
+        <div class="text-center mt-4">
+            <a href="/logout" class="text-indigo-600 hover:text-indigo-400">Logout</a>
+        </div>
+    </div>
+</body>
+</html>
