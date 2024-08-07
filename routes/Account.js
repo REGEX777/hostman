@@ -30,6 +30,14 @@ router.post('/account/regenerate-api-key', ensureAuthenticated, async (req, res)
         user.apiKey = uuidv4().replace(/-/g, '');
         await user.save();
 
+        // Log the API key regeneration
+        const apiKeyLog = new ApiKeyLog({
+            userId: user._id,
+            action: 'Regenerated API Key',
+            details: `API Key regenerated on ${new Date().toLocaleString()}`
+        });
+        await apiKeyLog.save();
+
         req.flash('success_message', 'API Key regenerated successfully.');
         res.redirect('/account');
     } catch (err) {
@@ -42,13 +50,16 @@ router.post('/account/regenerate-api-key', ensureAuthenticated, async (req, res)
 // POST to delete account
 router.post('/account/delete', ensureAuthenticated, async (req, res) => {
     try {
+        // Find user and delete
         await User.findByIdAndDelete(req.user._id);
+
+        // Logout user
         req.logout(err => {
             if (err) {
                 return res.status(500).send('Error logging out after account deletion.');
             }
             req.flash('success_message', 'Account deleted successfully.');
-            res.redirect('/signup');
+            res.redirect('/signup'); // Redirect to signup or login page after deletion
         });
     } catch (err) {
         console.error(err);

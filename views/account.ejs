@@ -39,6 +39,19 @@
         <div class="card-header text-center">
             Account Information
         </div>
+        <div class="card-content text-center">
+            <div class="mb-4">
+                <% if (user.profilePicture) { %>
+                    <img src="/uploads/<%= user.profilePicture %>" alt="Profile Picture" class="w-24 h-24 rounded-full mx-auto">
+                <% } else { %>
+                    <img src="https://via.placeholder.com/150" alt="Profile Picture" class="w-24 h-24 rounded-full mx-auto">
+                <% } %>
+            </div>
+            <form id="uploadProfilePictureForm" action="/account/upload-profile-picture" method="POST" enctype="multipart/form-data">
+                <input type="file" name="profilePicture" accept="image/*" class="mb-4">
+                <button type="submit" class="bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700">Upload Profile Picture</button>
+            </form>
+        </div>
         <div class="card-content">
             <p><strong>Email:</strong> <%= user.email %></p>
         </div>
