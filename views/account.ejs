@@ -60,6 +60,19 @@
                 <button type="submit" class="text-indigo-600 hover:text-indigo-400">Regenerate API Key</button>
             </form>
         </div>
+        <div class="text-center mt-4">
+            <form id="changePasswordForm" action="/account/change-password" method="POST">
+                <div class="mb-4">
+                    <label for="currentPassword" class="block text-sm font-medium">Current Password</label>
+                    <input type="password" name="currentPassword" id="currentPassword" class="mt-1 block w-full p-2 bg-gray-800 border border-gray-700 rounded-md" required>
+                </div>
+                <div class="mb-4">
+                    <label for="newPassword" class="block text-sm font-medium">New Password</label>
+                    <input type="password" name="newPassword" id="newPassword" class="mt-1 block w-full p-2 bg-gray-800 border border-gray-700 rounded-md" required>
+                </div>
+                <button type="submit" class="bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700">Change Password</button>
+            </form>
+        </div>
         <div class="card-header text-center mt-6">
             API Key Usage Logs
         </div>

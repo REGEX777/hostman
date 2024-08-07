@@ -101,4 +101,33 @@ router.post('/account/upload-profile-pic', ensureAuthenticated, upload.single('p
     }
 });
 
+// POST to change password
+router.post('/account/change-password', ensureAuthenticated, async (req, res) => {
+    try {
+        const { currentPassword, newPassword } = req.body;
+        const user = await User.findById(req.user._id);
+
+        if (!user) {
+            return res.status(404).send('User not found.');
+        }
+
+        const isMatch = await bcrypt.compare(currentPassword, user.password);
+        if (!isMatch) {
+            req.flash('error_message', 'Current password is incorrect.');
+            return res.redirect('/account');
+        }
+
+        const hashedNewPassword = await bcrypt.hash(newPassword, 10);
+        user.password = hashedNewPassword;
+        await user.save();
+
+        req.flash('success_message', 'Password changed successfully.');
+        res.redirect('/account');
+    } catch (err) {
+        console.error(err);
+        req.flash('error_message', 'Failed to change password.');
+        res.redirect('/account');
+    }
+});
+
 export default router;
