@@ -1,11 +1,24 @@
 import express from 'express';
 import bcrypt from 'bcryptjs';
+import multer from 'multer';
+import path from 'path';
 import User from '../models/User.js'; 
 import ApiKeyLog from '../models/ApiKeyLog.js'; // Assuming you have a model for logging API key usage
 import { ensureAuthenticated } from '../middleware/auth.js';
 import { v4 as uuidv4 } from 'uuid';
 
 const router = express.Router();
+
+// Multer configuration for file uploads
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'uploads/profile_pics');
+    },
+    filename: (req, file, cb) => {
+        cb(null, `${req.user._id}${path.extname(file.originalname)}`);
+    }
+});
+const upload = multer({ storage });
 
 // GET account page
 router.get('/account', ensureAuthenticated, async (req, res) => {
@@ -64,6 +77,26 @@ router.post('/account/delete', ensureAuthenticated, async (req, res) => {
     } catch (err) {
         console.error(err);
         req.flash('error_message', 'Failed to delete account.');
+        res.redirect('/account');
+    }
+});
+
+// POST to upload profile picture
+router.post('/account/upload-profile-pic', ensureAuthenticated, upload.single('profilePic'), async (req, res) => {
+    try {
+        const user = await User.findById(req.user._id);
+        if (!user) {
+            return res.status(404).send('User not found.');
+        }
+
+        user.profilePic = `/uploads/profile_pics/${req.file.filename}`;
+        await user.save();
+
+        req.flash('success_message', 'Profile picture uploaded successfully.');
+        res.redirect('/account');
+    } catch (err) {
+        console.error(err);
+        req.flash('error_message', 'Failed to upload profile picture.');
         res.redirect('/account');
     }
 });

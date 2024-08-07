@@ -40,16 +40,13 @@
             Account Information
         </div>
         <div class="card-content text-center">
-            <div class="mb-4">
-                <% if (user.profilePicture) { %>
-                    <img src="/uploads/<%= user.profilePicture %>" alt="Profile Picture" class="w-24 h-24 rounded-full mx-auto">
-                <% } else { %>
-                    <img src="https://via.placeholder.com/150" alt="Profile Picture" class="w-24 h-24 rounded-full mx-auto">
-                <% } %>
-            </div>
-            <form id="uploadProfilePictureForm" action="/account/upload-profile-picture" method="POST" enctype="multipart/form-data">
-                <input type="file" name="profilePicture" accept="image/*" class="mb-4">
-                <button type="submit" class="bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700">Upload Profile Picture</button>
+            <% if (user.profilePic) { %>
+                <img src="<%= user.profilePic %>" alt="Profile Picture" class="w-24 h-24 rounded-full mx-auto mb-4">
+            <% } %>
+            <form id="uploadProfilePicForm" action="/account/upload-profile-pic" method="POST" enctype="multipart/form-data">
+                <label for="profilePic" class="block text-sm font-medium">Upload Profile Picture</label>
+                <input type="file" name="profilePic" id="profilePic" class="mt-1 block w-full p-2 bg-gray-800 border border-gray-700 rounded-md mb-4" required>
+                <button type="submit" class="bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700">Upload</button>
             </form>
         </div>
         <div class="card-content">
@@ -70,16 +67,16 @@
             <thead>
                 <tr>
                     <th>Date</th>
-                    <th>Endpoint</th>
-                    <th>IP Address</th>
+                    <th>Action</th>
+                    <th>Details</th>
                 </tr>
             </thead>
             <tbody>
                 <% apiKeyLogs.forEach(log => { %>
                     <tr>
                         <td><%= log.createdAt.toLocaleString() %></td>
-                        <td><%= log.endpoint %></td>
-                        <td><%= log.ipAddress %></td>
+                        <td><%= log.action %></td>
+                        <td><%= log.details %></td>
                     </tr>
                 <% }) %>
             </tbody>
