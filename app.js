@@ -7,11 +7,12 @@ import MongoStore from 'connect-mongo';
 import passport from 'passport';
 import LocalStrategy from 'passport-local';
 import bcrypt from 'bcryptjs';
-import User from './models/User.js'; 
+import User from './models/User.js';
 import flash from 'connect-flash';
+import errorLogger from './middleware/errorLogger.js';
 
 
-// Database Initialization ssssss
+// Database Initialization
 mongoose.connect(process.env.MONGO_URI)
     .then(() => { console.log(`[INFORMATION]> Successfully connected to the database.`.green); })
     .catch(err => console.log(err));
@@ -28,14 +29,9 @@ app.set('view engine', 'ejs');
 app.use(express.static('public'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(flash());
+app.use(errorLogger);
 
-app.use((req, res, next) => {
-    res.locals.successMessages = req.flash('success');
-    res.locals.errorMessages = req.flash('error');
-    next();
-});
-
+// Session middleware must be set up before flash
 app.use(session({
     secret: process.env.SESSION_SECRET,
     resave: false,
@@ -46,9 +42,18 @@ app.use(session({
     }
 }));
 
+app.use(flash());
+
 // Initialize Passport and Session
 app.use(passport.initialize());
 app.use(passport.session());
+
+// Flash messages middleware
+app.use((req, res, next) => {
+    res.locals.successMessages = req.flash('success');
+    res.locals.errorMessages = req.flash('error');
+    next();
+});
 
 // Passport Local Strategy
 passport.use(new LocalStrategy({
@@ -91,15 +96,20 @@ import postPage from './routes/postPage.js';
 import signupRoute from './routes/Signup.js';
 import loginRoute from './routes/Login.js';
 import uploadRoute from './routes/Upload.js';
+import account from './routes/Account.js'
+import logsRoute from './routes/Logs.js';
 
 app.use('/', userRoute);
 app.use('/apidetails', keyDetails);
 app.use('/embedEditor', embedEditor);
 app.use('/api', apiControl);
 app.use('/post', postPage);
-app.use('/signup', signupRoute); 
-app.use('/login', loginRoute); 
-app.use('/upload', uploadRoute); 
+app.use('/signup', signupRoute);
+app.use('/login', loginRoute);
+app.use('/upload', uploadRoute);
+app.use('/account', account)
+app.use('/logs', logsRoute);
+
 
 const PORT = process.env.PORT;
 app.listen(PORT, () => {
