@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Favorites</title>
+    <link rel="stylesheet" href="/path-to-your-css">
+</head>
+<body>
+    <h1>Your Favorite Images</h1>
+    <div class="gallery">
+        <% if (favoriteImages.length > 0) { %>
+            <% favoriteImages.forEach(image => { %>
+                <div class="gallery-item">
+                    <img src="<%= image.url %>" alt="Favorite Image" />
+                    <form action="/favorites/remove/<%= image._id %>" method="POST">
+                        <button type="submit">Remove from Favorites</button>
+                    </form>
+                </div>
+            <% }) %>
+        <% } else { %>
+            <p>You have no favorite images.</p>
+        <% } %>
+    </div>
+</body>
+</html>

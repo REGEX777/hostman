@@ -14,6 +14,12 @@
                 <a href="/albums/<%= album._id %>"><%= album.name %></a>
                 <span>(<%= album.images.length %> images)</span>
             </li>
+            <div class="image-actions">
+                <form action="/favorites/add/<%= image._id %>" method="POST">
+                    <button type="submit">Add to Favorites</button>
+                </form>
+            </div>
+            
         <% }) %>
     </ul>
 </body>

@@ -99,6 +99,7 @@ import uploadRoute from './routes/Upload.js';
 import account from './routes/Account.js'
 import logsRoute from './routes/Logs.js';
 import albumRoute from './routes/Album.js';
+import favoriteRoute from './routes/favorites.js';
 
 app.use('/', userRoute);
 app.use('/apidetails', keyDetails);
@@ -111,6 +112,7 @@ app.use('/upload', uploadRoute);
 app.use('/account', account)
 app.use('/logs', logsRoute);
 app.use('/albums', albumRoute);
+app.use('/favorites', favoriteRoute);
 
 
 const PORT = process.env.PORT;
