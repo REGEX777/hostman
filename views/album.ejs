@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= album.name %></title>
+    <link rel="stylesheet" href="/path-to-your-css">
+</head>
+<body>
+    <h1><%= album.name %></h1>
+    <div class="gallery">
+        <% if (album.images.length > 0) { %>
+            <% album.images.forEach(image => { %>
+                <div class="gallery-item">
+                    <img src="<%= image.url %>" alt="Image" />
+                </div>
+            <% }) %>
+        <% } else { %>
+            <p>No images in this album.</p>
+        <% } %>
+    </div>
+</body>
+</html>
