@@ -19,6 +19,11 @@
             <div class="flex items-center justify-center flex-row gap-5">
                 <div class="w-10 h-10 rounded-full bg-gray-400"></div>
                 <p class="text-xl font-semibold text-white">Hostman</p>
+                <form action="/search" method="GET" class="search-form">
+                    <input type="text" name="query" placeholder="Search images..." required>
+                    <button type="submit">Search</button>
+                </form>
+                
             </div>
             <button class="h-10 w-[7rem] font-semibold text-lg text-white rounded-lg bg-[#8B1743]">
                 Upload +
