@@ -108,5 +108,43 @@ router.delete('/post/:id', async (req, res)=>{
 })
 
 
+router.post('/upload', ensureAuthenticated, async (req, res) => {
+    if (!req.files || !req.files.image) {
+        req.flash('error', 'No image uploaded');
+        return res.redirect('/upload');
+    }
+
+    const imageFile = req.files.image;
+    const uploadPath = path.join(__dirname, '../public/uploads/', imageFile.name);
+
+    try {
+        // Check if the file is an image
+        if (!imageFile.mimetype.startsWith('image/')) {
+            req.flash('error', 'Only image files are allowed');
+            return res.redirect('/upload');
+        }
+
+        // Move image to the uploads folder
+        await imageFile.mv(uploadPath);
+
+        // Save image details to the database
+        const newImage = new Image({
+            title: req.body.title,
+            description: req.body.description,
+            imageUrl: `/uploads/${imageFile.name}`,
+            owner: req.user._id,
+        });
+        await newImage.save();
+
+        req.flash('success', 'Image uploaded successfully');
+        res.redirect('/profile');
+    } catch (err) {
+        console.error(err);
+        req.flash('error', 'Failed to upload image');
+        res.redirect('/upload');
+    }
+});
+
+
 
 export default router;

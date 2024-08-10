@@ -2,6 +2,8 @@ import express from 'express';
 import User from '../models/User.js';
 import Image from '../models/Image.js';
 import { ensureAuthenticated } from '../middleware/auth.js'; // A middleware to ensure the user is authenticated
+import fs from 'fs';
+import path from 'path';
 
 const router = express.Router();
 
@@ -37,5 +39,39 @@ router.post('/edit', ensureAuthenticated, async (req, res) => {
         res.redirect('/profile');
     }
 });
+
+router.post('/edit-profile-picture', ensureAuthenticated, async (req, res) => {
+    if (!req.files || !req.files.profilePicture) {
+        req.flash('error', 'No profile picture uploaded');
+        return res.redirect('/profile');
+    }
+
+    const newProfilePicture = req.files.profilePicture;
+    const uploadPath = path.join(__dirname, '../public/uploads/', newProfilePicture.name);
+    const oldProfilePicturePath = path.join(__dirname, '../public', req.user.profilePicture);
+
+    try {
+        // Move new profile picture to the uploads folder
+        await newProfilePicture.mv(uploadPath);
+
+        // Delete old profile picture if it exists and is not the default one
+        if (req.user.profilePicture !== '/images/default-profile.png') {
+            fs.unlink(oldProfilePicturePath, (err) => {
+                if (err) console.error(`Failed to delete old profile picture: ${err}`);
+            });
+        }
+
+        // Update user's profile picture in the database
+        await User.findByIdAndUpdate(req.user._id, { profilePicture: `/uploads/${newProfilePicture.name}` });
+
+        req.flash('success', 'Profile picture updated successfully');
+        res.redirect('/profile');
+    } catch (err) {
+        console.error(err);
+        req.flash('error', 'Failed to update profile picture');
+        res.redirect('/profile');
+    }
+});
+
 
 export default router;

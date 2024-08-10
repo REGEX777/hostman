@@ -2,6 +2,8 @@ import express from 'express';
 import bcrypt from 'bcryptjs';
 import { v4 as uuidv4 } from 'uuid';
 import User from '../models/User.js'; 
+import { check, validationResult } from 'express-validator';
+
 const router = express.Router();
 
 
@@ -37,5 +39,48 @@ router.post('/', async (req, res) => {
         res.status(500).json({ message: 'Server error. Please try again.' });
     }
 });
+
+
+
+
+router.post('/signup',
+    [
+        check('username').not().isEmpty().withMessage('Username is required'),
+        check('email').isEmail().withMessage('Enter a valid email'),
+        check('password').isLength({ min: 6 }).withMessage('Password must be at least 6 characters long'),
+    ],
+    async (req, res) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.render('signup', { errors: errors.array() });
+        }
+
+        const { username, email, password } = req.body;
+
+        try {
+            const existingUser = await User.findOne({ username });
+            if (existingUser) {
+                req.flash('error', 'Username already taken');
+                return res.redirect('/signup');
+            }
+
+            const hashedPassword = await bcrypt.hash(password, 10);
+            const newUser = new User({
+                username,
+                email,
+                password: hashedPassword,
+            });
+
+            await newUser.save();
+            req.flash('success', 'Registration successful, please log in');
+            res.redirect('/login');
+        } catch (err) {
+            console.error(err);
+            req.flash('error', 'Failed to register user');
+            res.redirect('/signup');
+        }
+    }
+);
+
 
 export default router;
