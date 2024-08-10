@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= image.title %></title>
+    <link rel="stylesheet" href="/path-to-your-css">
+</head>
+<body>
+    <h1><%= image.title %></h1>
+    <img src="<%= image.url %>" alt="<%= image.title %>">
+    <p>Uploaded by: <%= image.uploadedBy.username %></p>
+
+    <!-- Display Comments -->
+    <div class="comments-section">
+        <h2>Comments</h2>
+        <% if (image.comments.length > 0) { %>
+            <% image.comments.forEach(comment => { %>
+                <div class="comment">
+                    <p><strong><%= comment.postedBy.username %>:</strong> <%= comment.text %></p>
+                    <p><small>Posted on: <%= comment.createdAt.toDateString() %></small></p>
+                </div>
+            <% }) %>
+        <% } else { %>
+            <p>No comments yet. Be the first to comment!</p>
+        <% } %>
+    </div>
+
+    <!-- Add Comment Form -->
+    <div class="add-comment-form">
+        <form action="/comments/<%= image._id %>" method="POST">
+            <textarea name="text" required placeholder="Leave a comment..."></textarea>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+
+    <a href="/">Back to Gallery</a>
+</body>
+</html>
