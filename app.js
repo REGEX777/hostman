@@ -102,6 +102,7 @@ import albumRoute from './routes/Album.js';
 import favoriteRoute from './routes/favorites.js';
 import commentRoute from './routes/comments.js';
 import searchRoute from './routes/search.js';
+import profileRoute from './routes/profile.js';
 
 app.use('/', userRoute);
 app.use('/apidetails', keyDetails);
@@ -117,6 +118,7 @@ app.use('/albums', albumRoute);
 app.use('/favorites', favoriteRoute);
 app.use('/comments', commentRoute);
 app.use('/search', searchRoute);
+app.use('/profile', profileRoute);
 
 
 const PORT = process.env.PORT;
