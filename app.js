@@ -10,6 +10,7 @@ import bcrypt from 'bcryptjs';
 import User from './models/User.js';
 import flash from 'connect-flash';
 import errorLogger from './middleware/errorLogger.js';
+import csrf from 'csurf';
 
 
 // Database Initialization
@@ -43,7 +44,14 @@ app.use(session({
 }));
 
 app.use(flash());
+const csrfProtection = csrf();
 
+app.use(csrfProtection);
+
+app.use((req, res, next) => {
+    res.locals.csrfToken = req.csrfToken();
+    next();
+});
 // Initialize Passport and Session
 app.use(passport.initialize());
 app.use(passport.session());
