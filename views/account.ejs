@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Account</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <style>
         body {
@@ -24,14 +23,6 @@
         .card-content {
             margin-bottom: 1rem;
         }
-        .table {
-            width: 100%;
-            margin-top: 1rem;
-        }
-        .table th, .table td {
-            padding: 0.75rem;
-            border-bottom: 1px solid #4a5568;
-        }
     </style>
 </head>
 <body class="min-h-screen flex items-center justify-center">
@@ -48,51 +39,6 @@
         <div class="text-center mt-4">
             <form id="regenerateApiKeyForm" action="/account/regenerate-api-key" method="POST">
                 <button type="submit" class="text-indigo-600 hover:text-indigo-400">Regenerate API Key</button>
-            </form>
-        </div>
-        <div class="card-header text-center mt-6">
-            API Key Usage Logs
-        </div>
-        <table class="table text-left">
-            <thead>
-                <tr>
-                    <th>Date</th>
-                    <th>Endpoint</th>
-                    <th>IP Address</th>
-                </tr>
-            </thead>
-            <tbody>
-                <% apiKeyLogs.forEach(log => { %>
-                    <tr>
-                        <td><%= log.createdAt.toLocaleString() %></td>
-                        <td><%= log.endpoint %></td>
-                        <td><%= log.ipAddress %></td>
-                    </tr>
-                <% }) %>
-            </tbody>
-        </table>
-        <div class="card-header text-center mt-6">
-            API Usage Statistics
-        </div>
-        <table class="table text-left">
-            <thead>
-                <tr>
-                    <th>Date</th>
-                    <th>Requests</th>
-                </tr>
-            </thead>
-            <tbody>
-                <% usageStats.forEach(stat => { %>
-                    <tr>
-                        <td><%= `${stat._id.day}-${stat._id.month}-${stat._id.year}` %></td>
-                        <td><%= stat.count %></td>
-                    </tr>
-                <% }) %>
-            </tbody>
-        </table>
-        <div class="text-center mt-6">
-            <form id="deleteAccountForm" action="/account/delete" method="POST">
-                <button type="submit" class="bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-red-700">Delete Account</button>
             </form>
         </div>
         <div class="text-center mt-4">

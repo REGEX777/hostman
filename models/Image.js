@@ -20,7 +20,7 @@ const imageSchema = new mongoose.Schema({
         default: Date.now,
     },
     owner: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: String,
         ref: 'User',
         required: true,
     },

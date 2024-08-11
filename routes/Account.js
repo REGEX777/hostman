@@ -21,19 +21,18 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 // GET account page
-router.get('/account', requireLogin, async (req, res) => {
+
+router.get('/', requireLogin, async (req, res) => {
     try {
         const user = await User.findById(req.user._id);
-        const apiKeyLogs = await ApiKeyLog.find({ userId: req.user._id }).sort({ createdAt: -1 });
-        res.render('account', { user, apiKeyLogs });
+        res.render('account', { user });
     } catch (err) {
         console.error(err);
         res.status(500).send('Server error. Please try again.');
     }
 });
 
-// POST to regenerate API key
-router.post('/account/regenerate-api-key', requireLogin, async (req, res) => {
+router.post('/regenerate-api-key', requireLogin, async (req, res) => {
     try {
         const user = await User.findById(req.user._id);
         if (!user) {
@@ -42,14 +41,6 @@ router.post('/account/regenerate-api-key', requireLogin, async (req, res) => {
 
         user.apiKey = uuidv4().replace(/-/g, '');
         await user.save();
-
-        // Log the API key regeneration
-        const apiKeyLog = new ApiKeyLog({
-            userId: user._id,
-            action: 'Regenerated API Key',
-            details: `API Key regenerated on ${new Date().toLocaleString()}`
-        });
-        await apiKeyLog.save();
 
         req.flash('success_message', 'API Key regenerated successfully.');
         res.redirect('/account');
@@ -60,8 +51,7 @@ router.post('/account/regenerate-api-key', requireLogin, async (req, res) => {
     }
 });
 
-// POST to delete account
-router.post('/account/delete', requireLogin, async (req, res) => {
+router.post('/delete', requireLogin, async (req, res) => {
     try {
         // Find user and delete
         await User.findByIdAndDelete(req.user._id);
@@ -81,8 +71,7 @@ router.post('/account/delete', requireLogin, async (req, res) => {
     }
 });
 
-// POST to upload profile picture
-router.post('/account/upload-profile-pic', requireLogin, upload.single('profilePic'), async (req, res) => {
+router.post('/upload-profile-pic', requireLogin, upload.single('profilePic'), async (req, res) => {
     try {
         const user = await User.findById(req.user._id);
         if (!user) {
@@ -101,8 +90,7 @@ router.post('/account/upload-profile-pic', requireLogin, upload.single('profileP
     }
 });
 
-// POST to change password
-router.post('/account/change-password', requireLogin, async (req, res) => {
+router.post('/change-password', requireLogin, async (req, res) => {
     try {
         const { currentPassword, newPassword } = req.body;
         const user = await User.findById(req.user._id);
