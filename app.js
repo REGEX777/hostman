@@ -11,6 +11,7 @@ import User from './models/User.js';
 import flash from 'connect-flash';
 import errorLogger from './middleware/errorLogger.js';
 import csrf from 'csurf';
+import helmet from 'helmet';
 
 
 // Database Initialization
@@ -31,6 +32,7 @@ app.use(express.static('public'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(errorLogger);
+app.use(helmet());
 
 // Session middleware must be set up before flash
 app.use(session({
@@ -129,7 +131,9 @@ app.use('/comments', commentRoute);
 app.use('/search', searchRoute);
 app.use('/profile', profileRoute);
 app.use('/embedEditor', embedEditorRoute);
-
+app.use((req, res) => {
+    res.status(404).render('404', { url: req.originalUrl });
+});
 
 const PORT = process.env.PORT;
 app.listen(PORT, () => {

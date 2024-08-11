@@ -5,35 +5,27 @@
         <br>
         <div class="flex items-center justify-center w-full font-poppins">
             <div class="w-[90%] flex flex-col items-start justify-start gap-10">
-                <p class="text-white text-2xl font-medium">API Details</p>
-                <div class="flex items-center justify-start h-[40rem] w-[90%]">
-                    <form action="/embedEditor/<%= image._id %>" method="POST" class="flex flex-col gap-10 items-center justify-center w-[60%] h-[40rem] bg-[#111111] rounded-lg">
-                        <div class="flex items-start justify-start flex-col w-[90%] text-white gap-3">
-                            <p>Embed Title</p>
-                            <div class="flex items-center justify-start h-12 w-[70%] bg-[#181818] rounded-lg">
-                                <input type="text" name="title" value="<%= image.embedMeta?.title || '' %>" class="w-full h-full bg-transparent text-white px-4 rounded-lg outline-none">
-                            </div>
+                <p class="text-white text-2xl font-medium">Edit Embed Details</p>
+                <div class="flex items-center justify-start h-auto w-[90%]">
+                    <form action="/embedEditor/<%= image._id %>" method="POST" class="flex flex-col gap-10 items-center justify-center w-[60%] p-6 bg-[#111111] rounded-lg">
+                        <div class="flex items-start justify-start flex-col w-full text-white gap-3">
+                            <label for="title">Embed Title</label>
+                            <input id="title" type="text" name="title" value="<%= image.embedMeta?.title || '' %>" class="w-full h-12 bg-[#181818] text-white px-4 rounded-lg outline-none" placeholder="Enter embed title">
                         </div>
-                        <div class="flex items-start justify-start flex-col w-[90%] text-white gap-3">
-                            <p>Embed Description</p>
-                            <div class="flex items-center justify-start h-[12rem] w-[70%] bg-[#181818] rounded-lg">
-                                <textarea name="description" class="w-full h-full bg-transparent text-white px-4 py-2 rounded-lg outline-none"><%= image.embedMeta?.description || '' %></textarea>
-                            </div>
+                        <div class="flex items-start justify-start flex-col w-full text-white gap-3">
+                            <label for="description">Embed Description</label>
+                            <textarea id="description" name="description" class="w-full h-28 bg-[#181818] text-white px-4 py-2 rounded-lg outline-none" placeholder="Enter embed description"><%= image.embedMeta?.description || '' %></textarea>
                         </div>
-                        <div class="flex items-start justify-start flex-col w-[90%] text-white gap-3">
-                            <p>Embed Footer</p>
-                            <div class="flex items-center justify-start h-12 w-[70%] bg-[#181818] rounded-lg">
-                                <input type="text" name="footer" value="<%= image.embedMeta?.footer || '' %>" class="w-full h-full bg-transparent text-white px-4 rounded-lg outline-none">
-                            </div>
+                        <div class="flex items-start justify-start flex-col w-full text-white gap-3">
+                            <label for="footer">Embed Footer</label>
+                            <input id="footer" type="text" name="footer" value="<%= image.embedMeta?.footer || '' %>" class="w-full h-12 bg-[#181818] text-white px-4 rounded-lg outline-none" placeholder="Enter embed footer">
                         </div>
-                        <div class="flex items-start justify-start flex-col w-[90%] text-white gap-3">
-                            <p>Embed Color</p>
-                            <div class="flex items-center justify-start h-12 w-[70%] bg-[#181818] rounded-lg">
-                                <input type="color" name="color" value="<%= image.embedMeta?.color || '#ffffff' %>" class="w-full h-full bg-transparent text-white px-4 rounded-lg outline-none">
-                            </div>
+                        <div class="flex items-start justify-start flex-col w-full text-white gap-3">
+                            <label for="color">Embed Color</label>
+                            <input id="color" type="color" name="color" value="<%= image.embedMeta?.color || '#ffffff' %>" class="w-full h-12 bg-[#181818] text-white px-4 rounded-lg outline-none">
                         </div>
                         <button type="submit" class="w-[10rem] bg-[#3B071B] text-white font-medium h-[2.5rem] rounded-lg">
-                            Submit
+                            Save Changes
                         </button>
                     </form>
                 </div>

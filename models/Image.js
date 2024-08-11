@@ -26,7 +26,7 @@ const imageSchema = new mongoose.Schema({
     },
     embedTitle: {
         type: String,
-        default: '',
+        default: '', 
     },
     embedFooter: {
         type: String,
@@ -35,6 +35,26 @@ const imageSchema = new mongoose.Schema({
     embedDescription: {
         type: String,
         default: '', 
+    },
+    embedColor: {
+        type: String,
+        default: '#FFFFFF', 
+    },
+    embedThumbnailUrl: {
+        type: String,
+        default: '', 
+    },
+    embedAuthorName: {
+        type: String,
+        default: '', 
+    },
+    embedAuthorIconUrl: {
+        type: String,
+        default: '', 
+    },
+    embedTimestamp: {
+        type: Date,
+        default: null, 
     },
 });
 
