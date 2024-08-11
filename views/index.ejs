@@ -15,10 +15,10 @@
                                     <i class="fa-solid fa-copy"></i>
                                 </div>
                                 <div class="flex items-center justify-center p-[0.7rem] bg-[#8B174352] rounded-lg text-[#FB2576]">
-                                    <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                                    <i class="fas fa-arrow-up-right-from-square"></i> 
                                 </div>
                                 <div class="flex items-center justify-center p-[0.7rem] bg-[#8B174352] rounded-lg text-[#FB2576]">
-                                    <i class="fa-solid fa-trash-can"></i>
+                                    <i class="fas fa-trash-can"></i> 
                                 </div>
                             </div>
                         </div>
@@ -32,22 +32,3 @@
         </div>
     </div>
 </div>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const timeElements = document.querySelectorAll('.upload-time');
-        timeElements.forEach(el => {
-            const rawTime = el.getAttribute('data-time');
-            const date = new Date(rawTime);
-            const formattedDate = date.toLocaleString('en-US', {
-                year: 'numeric',
-                month: 'short',
-                day: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit'
-            });
-            el.textContent = formattedDate;
-        });
-    });
-</script>

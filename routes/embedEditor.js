@@ -1,9 +1,8 @@
 import express from 'express';
-import Image from '../models/Image.js'; // Assuming you have an Image model
+import Image from '../models/Image.js';
 
 const router = express.Router();
 
-// Get the editor page
 router.get('/:id', async (req, res) => {
     try {
         const image = await Image.findById(req.params.id);
@@ -16,7 +15,6 @@ router.get('/:id', async (req, res) => {
     }
 });
 
-// Update the embed meta
 router.post('/:id', async (req, res) => {
     const { title, description, color } = req.body;
     try {
