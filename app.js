@@ -111,6 +111,7 @@ import favoriteRoute from './routes/favorites.js';
 import commentRoute from './routes/comments.js';
 import searchRoute from './routes/search.js';
 import profileRoute from './routes/profile.js';
+import embedEditorRoute from './routes/embedEditor.js';
 
 app.use('/', userRoute);
 app.use('/apidetails', keyDetails);
@@ -127,6 +128,7 @@ app.use('/favorites', favoriteRoute);
 app.use('/comments', commentRoute);
 app.use('/search', searchRoute);
 app.use('/profile', profileRoute);
+app.use('/embedEditor', embedEditorRoute);
 
 
 const PORT = process.env.PORT;

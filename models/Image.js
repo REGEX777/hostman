@@ -13,7 +13,7 @@ const imageSchema = new mongoose.Schema({
         required: true,
     },
     tags: {
-        type: [String], // Array of tags for searchability
+        type: [String], 
     },
     createdAt: {
         type: Date,
@@ -24,7 +24,20 @@ const imageSchema = new mongoose.Schema({
         ref: 'User',
         required: true,
     },
+    embedTitle: {
+        type: String,
+        default: '',
+    },
+    embedFooter: {
+        type: String,
+        default: '', 
+    },
+    embedDescription: {
+        type: String,
+        default: '', 
+    },
 });
 
 const Image = mongoose.model('Image', imageSchema);
+
 export default Image;
