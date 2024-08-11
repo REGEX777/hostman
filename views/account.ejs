@@ -38,6 +38,7 @@
         </div>
         <div class="text-center mt-4">
             <form id="regenerateApiKeyForm" action="/account/regenerate-api-key" method="POST">
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                 <button type="submit" class="text-indigo-600 hover:text-indigo-400">Regenerate API Key</button>
             </form>
         </div>
