@@ -1,14 +1,14 @@
 import express from 'express';
 import User from '../models/User.js';
 import Image from '../models/Image.js';
-import { ensureAuthenticated } from '../middleware/auth.js'; // A middleware to ensure the user is authenticated
+import { requireLogin } from '../middleware/auth.js'; // A middleware to ensure the user is authenticated
 import fs from 'fs';
 import path from 'path';
 
 const router = express.Router();
 
 // GET - View Profile
-router.get('/', ensureAuthenticated, async (req, res) => {
+router.get('/', requireLogin, async (req, res) => {
     try {
         const user = await User.findById(req.user._id).populate('images');
         const images = await Image.find({ owner: req.user._id });
@@ -22,7 +22,7 @@ router.get('/', ensureAuthenticated, async (req, res) => {
 });
 
 // POST - Update Profile
-router.post('/edit', ensureAuthenticated, async (req, res) => {
+router.post('/edit', requireLogin, async (req, res) => {
     const { bio, website, twitter, instagram } = req.body;
 
     try {
@@ -40,7 +40,7 @@ router.post('/edit', ensureAuthenticated, async (req, res) => {
     }
 });
 
-router.post('/edit-profile-picture', ensureAuthenticated, async (req, res) => {
+router.post('/edit-profile-picture', requireLogin, async (req, res) => {
     if (!req.files || !req.files.profilePicture) {
         req.flash('error', 'No profile picture uploaded');
         return res.redirect('/profile');

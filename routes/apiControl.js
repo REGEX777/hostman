@@ -4,6 +4,8 @@ import express from 'express';
 import mongoose from 'mongoose';
 import path from 'path'
 import fs from 'fs';
+import { requireLogin } from '../middleware/auth.js';
+
 
 // Model Import
 
@@ -108,7 +110,7 @@ router.delete('/post/:id', async (req, res)=>{
 })
 
 
-router.post('/upload', ensureAuthenticated, async (req, res) => {
+router.post('/upload', requireLogin, async (req, res) => {
     if (!req.files || !req.files.image) {
         req.flash('error', 'No image uploaded');
         return res.redirect('/upload');
