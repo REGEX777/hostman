@@ -1,15 +1,15 @@
 import express from 'express';
-import Image from '../models/Image.js';
+import Post from '../models/Post.js';
 
 const router = express.Router();
 
 router.get('/:id', async (req, res) => {
     try {
-        const image = await Image.findById(req.params.id);
-        if (!image) {
-            return res.status(404).send('Image not found');
+        const post = await Post.findById(req.params.id);
+        if (!post) {
+            return res.status(404).send('Post not found');
         }
-        res.render('embedEditor', { image });
+        res.render('embedEditor', { post });
     } catch (err) {
         res.status(500).send('Server Error');
     }
@@ -18,20 +18,21 @@ router.get('/:id', async (req, res) => {
 router.post('/:id', async (req, res) => {
     const { title, description, color } = req.body;
     try {
-        let image = await Image.findById(req.params.id);
-        if (!image) {
-            return res.status(404).send('Image not found');
+        let post = await Post.findById(req.params.id);
+        if (!post) {
+            return res.status(404).send('Post not found');
         }
 
-        image.embedMeta = {
-            title: title || image.embedMeta.title,
-            description: description || image.embedMeta.description,
-            color: color || image.embedMeta.color,
+        post.embedMeta = {
+            title: title || post.embedMeta.title,
+            description: description || post.embedMeta.description,
+            color: color || post.embedMeta.color,
         };
 
-        await image.save();
-        res.redirect(`/embedEditor/${image._id}`);
+        await post.save();
+        res.redirect(`/embedEditor/${post._id}`);
     } catch (err) {
+        console.log(err)
         res.status(500).send('Server Error');
     }
 });

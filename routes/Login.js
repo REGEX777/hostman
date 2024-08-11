@@ -14,12 +14,13 @@ const loginLimiter = rateLimit({
     skipSuccessfulRequests: true,
 });
 
-const logFailedAttempt = (email) => {
-    const logFilePath = path.join(__dirname, 'failed-logins.log');
+const logAttempt = (email, ip, success) => {
+    const logFilePath = path.join(__dirname, 'login-attempts.log');
     const timestamp = new Date().toISOString();
-    const logMessage = `${timestamp} - Failed login attempt for email: ${email}\n`;
+    const status = success ? 'SUCCESS' : 'FAILED';
+    const logMessage = `${timestamp} - Login ${status} for email: ${email} from IP: ${ip}\n`;
     fs.appendFile(logFilePath, logMessage, (err) => {
-        if (err) console.error('Failed to log failed login attempt:', err);
+        if (err) console.error('Failed to log login attempt:', err);
     });
 };
 
@@ -29,17 +30,20 @@ router.get('/', (req, res) => {
 
 router.post('/', loginLimiter, (req, res, next) => {
     const email = req.body.email;
+    const ip = req.ip || req.connection.remoteAddress;
+
     passport.authenticate('local', (err, user, info) => {
         if (err) return next(err);
         if (!user) {
             failedLoginAttempts[email] = (failedLoginAttempts[email] || 0) + 1;
-            logFailedAttempt(email);
+            logAttempt(email, ip, false);
             req.flash('error', info.message);
             return res.redirect('/login');
         }
         req.logIn(user, (err) => {
             if (err) return next(err);
             delete failedLoginAttempts[email];
+            logAttempt(email, ip, true);
             return res.redirect('/');
         });
     })(req, res, next);

@@ -18,9 +18,9 @@
                                 <a href="/post/<%= post.fileName %>" target="_blank" class="flex items-center justify-center p-[0.7rem] bg-[#8B174352] rounded-lg text-[#FB2576]">
                                     <i class="fa-solid fa-arrow-up-right-from-square"></i>
                                 </a>
-                                <div class="flex items-center justify-center p-[0.7rem] bg-[#8B174352] rounded-lg text-[#FB2576]">
-                                    <i class="fa-solid fa-trash-can"></i>
-                                </div>
+                                <a href="/embedEditor/<%= post._id %>" target="_blank" class="flex items-center justify-center p-[0.7rem] bg-[#8B174352] rounded-lg text-[#FB2576]">
+                                    <i class="fa-solid fa-pencil"></i>
+                                </a>
                             </div>
                         </div>
                         <div class="flex flex-col items-center justify-center w-full mb-5">
@@ -44,6 +44,6 @@
     
       navigator.clipboard.writeText(copyText.value);
       
-      alert("Copied the text: " + copyText.value);
+      alert("Copied to the clipboard");
     }
     </script>

@@ -1,11 +1,76 @@
 import mongoose from 'mongoose';
 
 const postSchema = new mongoose.Schema({
-    fileName: { type: String, required: true },
-    fileSize: { type: Number, required: true },
-    fileUploadTime: { type: Date, default: Date.now },
-    fileUploadIp: { type: String, required: true },
-    fileType: { type: String, required: true } // Add this field
+    title: {
+        type: String,
+        required: true,
+    },
+    description: {
+        type: String,
+    },
+    imageUrl: {
+        type: String,
+        required: true,
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now,
+    },
+    owner: {
+        type: String,
+        ref: 'User',
+        required: true,
+    },
+    embedTitle: {
+        type: String,
+        default: '',
+    },
+    embedFooter: {
+        type: String,
+        default: '',
+    },
+    embedDescription: {
+        type: String,
+        default: '',
+    },
+    embedColor: {
+        type: String,
+        default: '#FFFFFF',
+    },
+    embedThumbnailUrl: {
+        type: String,
+        default: '',
+    },
+    embedAuthorName: {
+        type: String,
+        default: '',
+    },
+    embedAuthorIconUrl: {
+        type: String,
+        default: '',
+    },
+    embedTimestamp: {
+        type: Date,
+        default: null,
+    },
+    fileName: {
+        type: String,
+        required: true,
+    },
+    fileSize: {
+        type: Number,
+        required: true,
+    },
+    fileUploadTime: {
+        type: Date,
+        default: Date.now,
+    },
+    fileUploadIp: {
+        type: String,
+        required: true,
+    }
 });
 
-export default mongoose.model('Post', postSchema);
+const Post = mongoose.model('Post', postSchema);
+
+export default Post;
