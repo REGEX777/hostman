@@ -14,6 +14,7 @@ const userSchema = new mongoose.Schema({
         type: String,
         default: '/images/default-profile.png', // Default profile picture
     },
+    images: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Image' }],
     bio: {
         type: String,
         default: 'Hello, I am a new user!',

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= user.username %>'s Profile</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+</head>
+<body class="bg-gray-900 text-white min-h-screen">
+
+    <div class="max-w-4xl mx-auto p-6">
+
+        <!-- Profile Header -->
+        <div class="flex items-center space-x-4 bg-gray-800 p-6 rounded-lg shadow-lg">
+            <img src="<%= user.profilePicture %>" alt="<%= user.username %>'s profile picture" class="w-24 h-24 rounded-full object-cover border-4 border-indigo-600">
+            <div>
+                <h1 class="text-3xl font-bold text-indigo-400"><%= user.username %></h1>
+                <p class="text-gray-400"><%= user.bio %></p>
+                <div class="flex space-x-4 mt-2">
+                    <% if (user.socialLinks.website) { %>
+                        <a href="<%= user.socialLinks.website %>" target="_blank" class="text-indigo-400 hover:text-indigo-200">Website</a>
+                    <% } %>
+                    <% if (user.socialLinks.twitter) { %>
+                        <a href="https://twitter.com/<%= user.socialLinks.twitter %>" target="_blank" class="text-indigo-400 hover:text-indigo-200">Twitter</a>
+                    <% } %>
+                    <% if (user.socialLinks.instagram) { %>
+                        <a href="https://instagram.com/<%= user.socialLinks.instagram %>" target="_blank" class="text-indigo-400 hover:text-indigo-200">Instagram</a>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+
+        <!-- Uploaded Images -->
+        <h2 class="text-2xl font-semibold text-indigo-400 mt-8">Your Uploaded Images</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-4">
+            <% images.forEach(image => { %>
+                <div class="bg-gray-800 p-4 rounded-lg shadow-lg">
+                    <img src="<%= image.imageUrl %>" alt="<%= image.title %>" class="w-full h-40 object-cover rounded-lg mb-4">
+                    <h3 class="text-lg font-semibold text-indigo-400"><%= image.title %></h3>
+                    <p class="text-gray-400"><%= image.description %></p>
+                </div>
+            <% }) %>
+        </div>
+
+        <!-- Edit Profile Form -->
+        <h2 class="text-2xl font-semibold text-indigo-400 mt-12">Edit Profile</h2>
+        <form action="/profile/edit" method="POST" class="bg-gray-800 p-6 rounded-lg shadow-lg mt-4">
+            <div class="mb-4">
+                <label for="bio" class="block text-gray-400">Bio</label>
+                <textarea id="bio" name="bio" class="w-full p-3 bg-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400" placeholder="Update your bio"><%= user.bio %></textarea>
+            </div>
+            <div class="mb-4">
+                <label for="website" class="block text-gray-400">Website URL</label>
+                <input id="website" type="text" name="website" class="w-full p-3 bg-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400" placeholder="Website URL" value="<%= user.socialLinks.website %>">
+            </div>
+            <div class="mb-4">
+                <label for="twitter" class="block text-gray-400">Twitter Handle</label>
+                <input id="twitter" type="text" name="twitter" class="w-full p-3 bg-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400" placeholder="Twitter Handle" value="<%= user.socialLinks.twitter %>">
+            </div>
+            <div class="mb-4">
+                <label for="instagram" class="block text-gray-400">Instagram Handle</label>
+                <input id="instagram" type="text" name="instagram" class="w-full p-3 bg-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400" placeholder="Instagram Handle" value="<%= user.socialLinks.instagram %>">
+            </div>
+            <button type="submit" class="w-full p-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-400">Update Profile</button>
+        </form>
+
+        <a href="/" class="block text-center text-indigo-400 hover:text-indigo-200 mt-8">Back to Home</a>
+    </div>
+</body>
+</html>
