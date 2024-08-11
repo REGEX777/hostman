@@ -5,24 +5,24 @@
     <%- include('partials/sidebar') -%>
     <div class="flex-grow ml-[5%] overflow-auto">
         <div class="flex items-center justify-center w-full bg-[#000000]">
-            <div class="grid grid-cols-3 w-[90%] items-center justify-center gap-10 py-10">
+            <div class="masonry grid gap-4 py-10 w-[90%]">
                 <% posts.forEach((post) => { %>
-                    <div class="w-full flex-col items-center justify-center min-h-[20rem] bg-[#151313] rounded-lg">
+                    <div class="flex flex-col bg-[#151313] rounded-lg overflow-hidden">
                         <img src="/uploads/<%= post.fileName %>" class="w-full" alt="" srcset="">
                         <div class="flex items-center justify-center">
                             <div class="flex flex-row items-center justify-center gap-3 py-5">
-                                <div class="flex items-center justify-center p-[0.7rem] bg-[#8B174352] rounded-lg text-[#FB2576]">
+                                <div class="p-[0.7rem] bg-[#8B174352] rounded-lg text-[#FB2576]">
                                     <i class="fa-solid fa-copy"></i>
                                 </div>
-                                <div class="flex items-center justify-center p-[0.7rem] bg-[#8B174352] rounded-lg text-[#FB2576]">
-                                    <i class="fas fa-arrow-up-right-from-square"></i> 
+                                <div class="p-[0.7rem] bg-[#8B174352] rounded-lg text-[#FB2576]">
+                                    <i class="fas fa-arrow-up-right-from-square"></i>
                                 </div>
-                                <div class="flex items-center justify-center p-[0.7rem] bg-[#8B174352] rounded-lg text-[#FB2576]">
-                                    <i class="fas fa-trash-can"></i> 
+                                <div class="p-[0.7rem] bg-[#8B174352] rounded-lg text-[#FB2576]">
+                                    <i class="fas fa-trash-can"></i>
                                 </div>
                             </div>
                         </div>
-                        <div class="flex flex-col items-center justify-center w-full mb-5">
+                        <div class="flex flex-col items-center justify-center w-full mb-5 text-center">
                             <p class="text-xl font-semibold text-white"><%= post.fileName %></p>
                             <p class="text-[#777777]">Uploaded at <span class="upload-time" data-time="<%= post.fileUploadTime %>"></span></p>
                         </div>
@@ -32,3 +32,18 @@
         </div>
     </div>
 </div>
+<!-- well we will have to use custom css for this as its not really possible in tailwind -->
+<style>
+.masonry {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem; 
+    grid-auto-rows: minmax(100px, auto); 
+}
+
+.masonry > * {
+    display: flex;
+    flex-direction: column;
+    break-inside: avoid;
+}
+</style>
