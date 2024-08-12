@@ -125,8 +125,6 @@ app.use('/account', account)
 app.use('/logs', logsRoute);
 app.use('/albums', albumRoute);
 app.use('/favorites', favoriteRoute);
-app.use('/comments', commentRoute);
-app.use('/search', searchRoute);
 app.use('/profile', profileRoute);
 app.use('/embedEditor', embedEditorRoute);
 app.use((req, res) => {

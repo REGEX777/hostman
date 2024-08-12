@@ -7,27 +7,40 @@
         <div class="flex items-center justify-center w-full bg-[#000000]">
             <div class="grid grid-cols-3 w-[90%] items-start justify-center gap-10 py-10">
                 <% posts.forEach((post) => { %>
-                    <div class="w-full flex-col items-center justify-center min-h-[20rem] bg-[#151313] rounded-lg">
-                        <img src="/uploads/<%= post.fileName %>" class="w-full" alt="" srcset="">
-                        <div class="flex items-center justify-center">
-                            <div class="flex flex-row items-center justify-center gap-3 py-5">
-                                <input type="text" value="http://localhost:7999/post/<%= post.fileName %>" id="myInput" hidden>
-                                <button onclick="copyToClipboard()" class="flex items-center justify-center p-[0.7rem] bg-[#8B174352] rounded-lg text-[#FB2576]">
-                                    <i class="fa-solid fa-copy"></i>
+                <div class="w-full flex-col items-center justify-center min-h-[20rem] bg-[#151313] rounded-lg">
+                    <img src="/uploads/<%= post.fileName %>" class="w-full" alt="" srcset="">
+                    <div class="flex items-center justify-center">
+                        <div class="flex flex-row items-center justify-center gap-3 py-5">
+                            <input type="text" value="http://localhost:7999/post/<%= post.fileName %>" id="myInput"
+                                hidden>
+                            <button onclick="copyToClipboard()"
+                                class="flex items-center justify-center p-[0.7rem] bg-[#8B174352] rounded-lg text-[#FB2576]">
+                                <i class="fa-solid fa-copy"></i>
+                            </button>
+                            <a href="/post/<%= post.fileName %>" target="_blank"
+                                class="flex items-center justify-center p-[0.7rem] bg-[#8B174352] rounded-lg text-[#FB2576]">
+                                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                            </a>
+                            <a href="/embedEditor/<%= post._id %>" target="_blank"
+                                class="flex items-center justify-center p-[0.7rem] bg-[#8B174352] rounded-lg text-[#FB2576]">
+                                <i class="fa-solid fa-pencil"></i>
+                            </a>
+                            <form action="/favorites/add/<%= post._id %>" method="post">
+                                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                                <button type="submit"
+                                    class="flex items-center justify-center p-[0.7rem] bg-[#8B174352] rounded-lg text-[#FB2576]">
+                                    <i class="fa-regular fa-star"></i>
                                 </button>
-                                <a href="/post/<%= post.fileName %>" target="_blank" class="flex items-center justify-center p-[0.7rem] bg-[#8B174352] rounded-lg text-[#FB2576]">
-                                    <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                                </a>
-                                <a href="/embedEditor/<%= post._id %>" target="_blank" class="flex items-center justify-center p-[0.7rem] bg-[#8B174352] rounded-lg text-[#FB2576]">
-                                    <i class="fa-solid fa-pencil"></i>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="flex flex-col items-center justify-center w-full mb-5">
-                            <a href="/post/<%= post.fileName %>" target="_blank" class="text-xl font-semibold text-white"><%= post.fileName %></a>
-                            <p class="text-[#777777]">Uploaded at <span class="upload-time" data-time="<%= post.fileUploadTime %>"></span></p>
+                            </form>
                         </div>
                     </div>
+                    <div class="flex flex-col items-center justify-center w-full mb-5">
+                        <a href="/post/<%= post.fileName %>" target="_blank"
+                            class="text-xl font-semibold text-white"><%= post.fileName %></a>
+                        <p class="text-[#777777]">Uploaded at <span class="upload-time"
+                                data-time="<%= post.fileUploadTime %>"></span></p>
+                    </div>
+                </div>
                 <% }); %>
             </div>
         </div>
@@ -37,13 +50,13 @@
 
 <script>
     function copyToClipboard() {
-      var copyText = document.getElementById("myInput");
-    
-      copyText.select();
-      copyText.setSelectionRange(0, 99999);
-    
-      navigator.clipboard.writeText(copyText.value);
-      
-      alert("Copied to the clipboard");
+        var copyText = document.getElementById("myInput");
+
+        copyText.select();
+        copyText.setSelectionRange(0, 99999);
+
+        navigator.clipboard.writeText(copyText.value);
+
+        alert("Copied to the clipboard");
     }
-    </script>
+</script>
