@@ -1,11 +1,12 @@
 import express from 'express';
 import Album from '../models/Album.js';
-import Image from '../models/Image.js';
+import Post from '../models/Post.js';
 
 const router = express.Router();
 
 // GET - Create Album page
-router.get('/create', (req, res) => {
+router.get('/create', async (req, res) => {
+    const userImages = await Post.find()
     res.render('createAlbum');
 });
 

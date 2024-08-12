@@ -1,36 +1,35 @@
 import multer from 'multer';
-import { v4 as uuidv4 } from 'uuid';
+import {v4 as uuidv4} from 'uuid';
 import express from 'express';
-import path from 'path';
-import fs from 'fs';
-import flash from 'connect-flash';
-import session from 'express-session';
 import mongoose from 'mongoose';
-import mime from 'mime-types';
+import path from 'path'
+import fs from 'fs';
+import { requireLogin } from '../middleware/auth.js';
+
+
+// Model Import
 
 import Post from '../models/Post.js';
+import User from '../models/User.js'
+
+// Middleware
+import verifyApiKey from '../middleware/apiAuth.js'
 
 const router = express.Router();
 
-router.use(session({
-    secret: 'your_secret_key',
-    resave: false,
-    saveUninitialized: true
-}));
-router.use(flash());
-
 const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
+    destination: function(req, file, cb){
         cb(null, 'public/uploads/');
     },
-    filename: function (req, file, cb) {
-        const extension = file.originalname.split('.').pop();
-        const name = `${uuidv4()}.${extension}`;
+    filename: function(req, file, cb){
+        const extension = file.originalname.split('.').pop() // give me the file extension aaaaa
+        const name = `${uuidv4()}.${extension}` //new name 
         cb(null, name);
     }
-});
+})
 
 const fileFilter = (req, file, cb) => {
+    // Accept image files only
     const allowedTypes = /jpeg|jpg|png|gif/;
     const extname = allowedTypes.test(path.extname(file.originalname).toLowerCase());
     const mimetype = allowedTypes.test(file.mimetype);
@@ -42,90 +41,77 @@ const fileFilter = (req, file, cb) => {
     }
 };
 
+
+
 const upload = multer({
     storage: storage,
     fileFilter: fileFilter
-});
+})
 
-router.get("/", async (req, res) => {
-    try {
-        const posts = await Post.find().sort({ fileUploadTime: -1 });
-        res.render('upload', { message: req.flash('message'), posts });
-    } catch (error) {
-        req.flash('message', 'Error fetching posts');
-        res.redirect('/');
-    }
-});
 
-router.post('/upload', upload.array('files', 10), async (req, res) => {
+
+
+router.get("/", (req, res)=>{
+    res.render('upload')
+})
+
+
+
+router.post('/', upload.array('files', 10), async (req, res) => {
     const now = new Date();
     const uploadIp = req.ip;
 
     if (!req.files || req.files.length === 0) {
-        req.flash('message', 'No files were uploaded.');
-        return res.redirect('/');
+        return res.status(400).send('No files were uploaded.');
     }
 
     try {
         const posts = req.files.map(file => ({
+            owner: req.user._id,
             fileName: file.filename,
             fileSize: file.size,
             fileUploadTime: now,
             fileUploadIp: uploadIp,
-            fileType: mime.lookup(file.originalname) || 'application/octet-stream'
+            fileType: file.mimetype
         }));
 
         await Post.insertMany(posts);
-        req.flash('message', 'Files have been uploaded successfully.');
-        res.redirect('/');
+        console.log('[INFORMATION]> Images uploaded successfully and details were saved in the database.');
+        res.json({ message: 'Files have been uploaded successfully.', files: req.files });
     } catch (err) {
-        req.flash('message', 'Server error.');
-        res.redirect('/');
+        console.error(err);
+        res.status(500).send('Server error.');
     }
 });
 
-router.delete('/post/:id', async (req, res) => {
+
+router.delete('/post/:id', async (req, res)=>{
     try {
-        const postId = req.params.id;
+        const postId = req.params.id;   
 
         const post = await Post.findById(postId);
 
         if (!post) {
-            req.flash('message', 'Post not found');
-            return res.redirect('/');
+            return res.status(404).send('Post not found'); 
         }
-
+        
         fs.unlink(__dirname + `/public/uploads/${post.filename}`, (err) => {
-            if (err) throw err;
+            if (err) throw err;  
             console.log(`[DEBUG]> Successful deletion of file ${post.filename}`);
         });
 
         await Post.deleteOne({ _id: postId });
 
-        req.flash('message', 'Post deleted successfully');
-        res.redirect('/');
+        res.status(200).send('Post deleted successfully');  
+        console.log(`[DEBUG]> Successful deletion of ID ${postId}`);
     } catch (error) {
-        req.flash('message', 'Internal Server Error');
-        res.redirect('/');
+        console.error(error);  
+        res.status(500).send('Internal Server Error');  
     }
-});
+})
 
-router.get('/download/:id', async (req, res) => {
-    try {
-        const postId = req.params.id;
-        const post = await Post.findById(postId);
 
-        if (!post) {
-            req.flash('message', 'File not found');
-            return res.redirect('/');
-        }
 
-        const filePath = path.join(__dirname, `/public/uploads/${post.fileName}`);
-        res.download(filePath, post.fileName);
-    } catch (error) {
-        req.flash('message', 'Error downloading file');
-        res.redirect('/');
-    }
-});
+
 
 export default router;

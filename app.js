@@ -44,12 +44,13 @@ app.use(session({
 }));
 
 app.use(flash());
-const csrfProtection = csrf();
+// const csrfProtection = csrf();
 
-app.use(csrfProtection);
+// app.use(csrfProtection);
 
 app.use((req, res, next) => {
-    res.locals.csrfToken = req.csrfToken();
+    // res.locals.csrfToken = req.csrfToken();
+    res.locals.csrfToken = 'jhvfjsdb';
     next();
 });
 // Initialize Passport and Session
