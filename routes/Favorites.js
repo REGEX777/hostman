@@ -1,6 +1,6 @@
 import express from 'express';
 import User from '../models/User.js';
-import Image from '../models/Image.js';
+import Post from '../models/Post.js';
 
 const router = express.Router();
 
@@ -48,8 +48,7 @@ router.post('/remove/:imageId', async (req, res) => {
 router.get('/', async (req, res) => {
     try {
         const user = req.user;
-        const favoriteImages = await Image.find({ _id: { $in: user.favorites } });
-        
+        const favoriteImages = await Post.find({ _id: { $in: user.favorites } });
         res.render('favorites', { favoriteImages });
     } catch (err) {
         console.error(err);

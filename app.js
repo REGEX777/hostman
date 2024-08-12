@@ -11,7 +11,7 @@ import User from './models/User.js';
 import flash from 'connect-flash';
 import errorLogger from './middleware/errorLogger.js';
 import csrf from 'csurf';
-
+import color from 'colors'
 
 // Database Initialization
 mongoose.connect(process.env.MONGO_URI)
