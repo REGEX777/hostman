@@ -1,27 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create Album</title>
     <link rel="stylesheet" href="/css/styles.css">
 </head>
-<body>
-    <h1>Create a New Album</h1>
-    <form action="/albums/create" method="POST">
-        <div>
-            <label for="name">Album Name:</label>
-            <input type="text" id="name" name="name" required>
-        </div>
-        <div>
-            <label for="imageIds">Select Images:</label>
-            <select id="imageIds" name="imageIds" multiple>
-                <% userImages.forEach(image => { %>
-                    <option value="<%= image._id %>"><%= image.url %></option>
-                <% }) %>
-            </select>
-        </div>
-        <button type="submit">Create Album</button>
-    </form>
+
+<body class="bg-gray-900 text-white min-h-screen flex items-center justify-center">
+    <div class="bg-gray-800 p-8 rounded-lg shadow-lg w-full max-w-md">
+        <h1 class="text-3xl font-bold text-center mb-6">Create a New Album</h1>
+        <form action="/albums/create" method="POST" class="space-y-6">
+            <div>
+                <label for="name" class="block text-sm font-medium text-gray-300">Album Name:</label>
+                <input type="text" id="name" name="name" required
+                    class="mt-1 block w-full px-3 py-2 bg-gray-700 text-white rounded-md border border-gray-600 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+            </div>
+            <div>
+                <label for="imageIds" class="block text-sm font-medium text-gray-300">Select Images:</label>
+                <select id="imageIds" name="imageIds" multiple
+                    class="mt-1 block w-full px-3 py-2 bg-gray-700 text-white rounded-md border border-gray-600 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                    <% userImages.forEach(image => { %>
+                    <option value="<%= image._id %>"><img src="/uploads/<%= image.fileName %>" alt="" srcset=""></option>
+                    <% }) %>
+                </select>
+            </div>
+            <button type="submit"
+                class="w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                Create Album
+            </button>
+        </form>
+    </div>
 </body>
+
 </html>

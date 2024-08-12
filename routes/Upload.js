@@ -10,10 +10,7 @@ import { requireLogin } from '../middleware/auth.js';
 // Model Import
 
 import Post from '../models/Post.js';
-import User from '../models/User.js'
 
-// Middleware
-import verifyApiKey from '../middleware/apiAuth.js'
 
 const router = express.Router();
 
@@ -51,13 +48,13 @@ const upload = multer({
 
 
 
-router.get("/", (req, res)=>{
+router.get("/", requireLogin,(req, res)=>{
     res.render('upload')
 })
 
 
 
-router.post('/', upload.array('files', 10), async (req, res) => {
+router.post('/', requireLogin, fileFilter, upload.array('files', 10), async (req, res) => {
     const now = new Date();
     const uploadIp = req.ip;
 
@@ -85,7 +82,7 @@ router.post('/', upload.array('files', 10), async (req, res) => {
 });
 
 
-router.delete('/post/:id', async (req, res)=>{
+router.delete('/post/:id', requireLogin, async (req, res)=>{
     try {
         const postId = req.params.id;   
 
