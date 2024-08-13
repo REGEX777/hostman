@@ -1,4 +1,5 @@
 import express from 'express';
+import mongoose from 'mongoose';
 import Album from '../models/Album.js';
 import Post from '../models/Post.js';
 
@@ -6,20 +7,36 @@ const router = express.Router();
 
 // GET - Create Album page
 router.get('/create', async (req, res) => {
-    const userImages = await Post.find({})
-    res.render('createAlbum', {userImages});
+    try {
+        const userImages = await Post.find({});
+        res.render('createAlbum', { userImages });
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Server error. Please try again.');
+    }
 });
 
 router.post('/create', async (req, res) => {
     try {
         const { name, imageIds } = req.body;
-        const imageIdsArray = imageIds ? imageIds.split(',') : [];
-        console.log(req.body)
+        // convert the ids to the fucking object ids man pls for fuck sakes
+        const imageIdsArray = imageIds ? imageIds.split(',').map(id => {
+            id = id.trim(); // will remove the whitepsace
+
+            if (mongoose.Types.ObjectId.isValid(id)) {
+                return new mongoose.Types.ObjectId(id); 
+            } else {
+                console.error(`bad id: ${id}`);
+                return null;
+            }
+        }).filter(id => id !== null) : []; // keel the bad ids
+
         const album = new Album({
             name,
             user: req.user._id,
-            images: imageIdsArray // This should be an array of image IDs
+            images: imageIdsArray
         });
+
         await album.save();
         req.flash('success', 'Album created successfully!');
         res.redirect('/albums');
@@ -30,10 +47,10 @@ router.post('/create', async (req, res) => {
     }
 });
 
+
 router.get('/', async (req, res) => {
     try {
         const albums = await Album.find({ user: req.user._id }).populate('images');
-        console.log(albums)
         res.render('albums', { albums });
     } catch (err) {
         console.error(err);
@@ -43,7 +60,16 @@ router.get('/', async (req, res) => {
 
 router.get('/:id', async (req, res) => {
     try {
-        const album = await Album.findById(req.params.id).populate('images');
+        const id = req.params.id;
+
+        // testing if its a valid id or noooooooooooot
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).send('Invalid album ID');
+        }
+
+        const album = await Album.findById(id).populate('images');
+        console.log(album.images);
+        
         if (!album) {
             return res.status(404).send('Album not found');
         }
@@ -53,5 +79,4 @@ router.get('/:id', async (req, res) => {
         res.status(500).send('Server error. Please try again.');
     }
 });
-
 export default router;

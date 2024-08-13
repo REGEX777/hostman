@@ -12,7 +12,7 @@
         <ul>
             <% albums.forEach(album => { %>
                 <li class="mb-4">
-                    <h2 class="text-2xl font-bold mb-2"><%= album.name %> (<%= album.images.length %> images)</h2>
+                    <a href="/albums/<%= album.id %>" class="text-2xl font-bold mb-2"><%= album.name %> (<%= album.images.length %> images)</a>
                     <div class="grid grid-cols-3 gap-4">
                         <% album.images.forEach(image => { %>
                             <div class="relative block">

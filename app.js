@@ -109,8 +109,6 @@ import account from './routes/Account.js'
 import logsRoute from './routes/Logs.js';
 import albumRoute from './routes/Album.js';
 import favoriteRoute from './routes/favorites.js';
-import commentRoute from './routes/comments.js';
-import searchRoute from './routes/search.js';
 import profileRoute from './routes/profile.js';
 import embedEditorRoute from './routes/embedEditor.js';
 

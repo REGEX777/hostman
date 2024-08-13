@@ -1,6 +1,5 @@
 import express from 'express';
 import User from '../models/User.js';
-import Image from '../models/Image.js';
 import { requireLogin } from '../middleware/auth.js'; // A middleware to ensure the user is authenticated
 import fs from 'fs';
 import path from 'path';
@@ -11,9 +10,8 @@ const router = express.Router();
 router.get('/', requireLogin, async (req, res) => {
     try {
         const user = await User.findById(req.user._id).populate('images');
-        const images = await Image.find({ owner: req.user._id });
 
-        res.render('profile/view', { user, images });
+        res.render('profile/view', { user });
     } catch (err) {
         console.error(err);
         req.flash('error', 'Failed to load profile');

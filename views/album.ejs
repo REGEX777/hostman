@@ -9,10 +9,10 @@
 <body>
     <h1><%= album.name %></h1>
     <div class="gallery">
-        <% if (album.images.length > 0) { %>
+        <% if (album.images && album.images.length > 0) { %>
             <% album.images.forEach(image => { %>
                 <div class="gallery-item">
-                    <img src="<%= image.fileName %>" alt="Image" />
+                    <img src="/uploads/<%= image.fileName %>" alt="Image" />
                 </div>
                 <div class="image-actions">
                     <form action="/favorites/add/<%= image._id %>" method="POST">
