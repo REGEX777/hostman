@@ -68,7 +68,6 @@ router.get('/:id', async (req, res) => {
         }
 
         const album = await Album.findById(id).populate('images');
-        console.log(album.images);
         
         if (!album) {
             return res.status(404).send('Album not found');

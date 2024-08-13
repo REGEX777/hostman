@@ -3,11 +3,13 @@ export default {
   content: ["./views/**/*.{html,ejs,js}"],
   theme: {
     extend: {
-      fontFamily:{
+      fontFamily: {
         "poppins": 'Poppins, sans-serif'
-      }
+      },
+      animation: {
+        bounce: 'bounce 0.5s ease-in-out',
+      },
     },
   },
   plugins: [],
 }
-

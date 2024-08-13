@@ -8,7 +8,7 @@
             <div class="grid grid-cols-3 w-[90%] items-start justify-center gap-10 py-10">
                 <% posts.forEach((post) => { %>
                 <div class="w-full flex-col items-center justify-center min-h-[20rem] bg-[#151313] rounded-lg">
-                    <img src="/uploads/<%= post.fileName %>" class="w-full" alt="" srcset="">
+                    <img src="/uploads/<%= post.fileName %>" class="w-full" alt="<%= post.fileName %>">
                     <div class="flex items-center justify-center">
                         <div class="flex flex-row items-center justify-center gap-3 py-5">
                             <input type="text" value="http://localhost:7999/post/<%= post.fileName %>" id="myInput"
@@ -25,13 +25,16 @@
                                 class="flex items-center justify-center p-[0.7rem] bg-[#8B174352] rounded-lg text-[#FB2576]">
                                 <i class="fa-solid fa-pencil"></i>
                             </a>
-                            <form action="/favorites/add/<%= post._id %>" method="post">
-                                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                                <button type="submit"
-                                    class="flex items-center justify-center p-[0.7rem] bg-[#8B174352] rounded-lg text-[#FB2576]">
-                                    <i class="fa-regular fa-star"></i>
-                                </button>
-                            </form>
+                            <button data-post-id="<%= post._id %>"
+                                data-favorite="<%= user.favorites.includes(post._id.toString()) ? 'true' : 'false' %>"
+                                onclick="toggleFavorite(this)"
+                                class="flex items-center justify-center p-[0.7rem] bg-[#8B174352] rounded-lg text-[#FB2576]">
+                                <% if (user.favorites.includes(post._id.toString())) { %>
+                                <i class="fa-solid fa-star text-yellow-500"></i>
+                                <% } else { %>
+                                <i class="fa-regular fa-star"></i>
+                                <% } %>
+                            </button>
                         </div>
                     </div>
                     <div class="flex flex-col items-center justify-center w-full mb-5">
@@ -58,5 +61,41 @@
         navigator.clipboard.writeText(copyText.value);
 
         alert("Copied to the clipboard");
+    }
+
+    async function toggleFavorite(button) {
+        const postId = button.getAttribute('data-post-id');
+        const isFavorite = button.getAttribute('data-favorite') === 'true';
+        const url = `/favorites/toggle/${postId}`;
+
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-Token': '<%= csrfToken %>',
+                },
+            });
+
+            if (response.ok) {
+                button.setAttribute('data-favorite', !isFavorite);
+                const icon = button.querySelector('i');
+
+                if (isFavorite) {
+                    icon.classList.remove('fa-solid', 'text-yellow-500');
+                    icon.classList.add('fa-regular');
+                } else {
+                    icon.classList.remove('fa-regular');
+                    icon.classList.add('fa-solid', 'text-yellow-500');
+                }
+
+                button.classList.add('animate-bounce');
+                setTimeout(() => button.classList.remove('animate-bounce'), 500);
+            } else {
+                console.error('Failed to toggle favorite');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
     }
 </script>

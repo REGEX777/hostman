@@ -4,25 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= album.name %></title>
-    <link rel="stylesheet" href="/path-to-your-css">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
-<body>
-    <h1><%= album.name %></h1>
-    <div class="gallery">
-        <% if (album.images && album.images.length > 0) { %>
-            <% album.images.forEach(image => { %>
-                <div class="gallery-item">
-                    <img src="/uploads/<%= image.fileName %>" alt="Image" />
-                </div>
-                <div class="image-actions">
-                    <form action="/favorites/add/<%= image._id %>" method="POST">
-                        <button type="submit">Add to Favorites</button>
-                    </form>
-                </div>
-            <% }) %>
-        <% } else { %>
-            <p>No images in this album.</p>
-        <% } %>
+<body class="bg-white text-gray-800">
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-3xl font-bold text-center mb-8"><%= album.name %></h1>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            <% if (album.images && album.images.length > 0) { %>
+                <% album.images.forEach(image => { %>
+                    <div class="border border-gray-200 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-200">
+                        <img src="/uploads/<%= image.fileName %>" alt="Image" class="w-full h-48 object-cover">
+                        <div class="p-4">
+                            <form action="/favorites/add/<%= image._id %>" method="POST">
+                                <button type="submit" class="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 transition-colors duration-200">Add to Favorites</button>
+                            </form>
+                        </div>
+                    </div>
+                <% }) %>
+            <% } else { %>
+                <p class="text-center text-gray-500 col-span-full">No images in this album.</p>
+            <% } %>
+        </div>
     </div>
 </body>
 </html>
