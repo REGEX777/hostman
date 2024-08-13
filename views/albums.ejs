@@ -4,23 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Your Albums</title>
-    <link rel="stylesheet" href="/path-to-your-css">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
-<body>
-    <h1>Your Albums</h1>
-    <ul>
-        <% albums.forEach(album => { %>
-            <li>
-                <a href="/albums/<%= album._id %>"><%= album.name %></a>
-                <span>(<%= album.images.length %> images)</span>
-            </li>
-            <div class="image-actions">
-                <form action="/favorites/add/<%= image._id %>" method="POST">
-                    <button type="submit">Add to Favorites</button>
-                </form>
-            </div>
-            
-        <% }) %>
-    </ul>
+<body class="bg-gray-900 text-white min-h-screen flex items-center justify-center">
+    <div class="bg-gray-800 p-8 rounded-lg shadow-lg w-full max-w-2xl">
+        <h1 class="text-3xl font-bold text-center mb-6">Your Albums</h1>
+        <ul>
+            <% albums.forEach(album => { %>
+                <li class="mb-4">
+                    <h2 class="text-2xl font-bold mb-2"><%= album.name %> (<%= album.images.length %> images)</h2>
+                    <div class="grid grid-cols-3 gap-4">
+                        <% album.images.forEach(image => { %>
+                            <div class="relative block">
+                                <img src="/uploads/<%= image.fileName %>" alt="Image"
+                                    class="w-full h-32 object-cover rounded-md border-2 border-gray-600">
+                            </div>
+                        <% }) %>
+                    </div>
+                </li>
+            <% }) %>
+        </ul>
+    </div>
 </body>
 </html>

@@ -13,10 +13,12 @@ router.get('/create', async (req, res) => {
 router.post('/create', async (req, res) => {
     try {
         const { name, imageIds } = req.body;
+        const imageIdsArray = imageIds ? imageIds.split(',') : [];
+        console.log(req.body)
         const album = new Album({
             name,
             user: req.user._id,
-            images: imageIds // This should be an array of image IDs
+            images: imageIdsArray // This should be an array of image IDs
         });
         await album.save();
         req.flash('success', 'Album created successfully!');
@@ -31,6 +33,7 @@ router.post('/create', async (req, res) => {
 router.get('/', async (req, res) => {
     try {
         const albums = await Album.find({ user: req.user._id }).populate('images');
+        console.log(albums)
         res.render('albums', { albums });
     } catch (err) {
         console.error(err);
