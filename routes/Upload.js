@@ -73,7 +73,7 @@ router.post('/', requireLogin, upload.array('files', 10), async (req, res) => {
 
         await Post.insertMany(posts);
         console.log('[INFORMATION]> Images uploaded successfully and details were saved in the database.');
-        res.json({ message: 'Files have been uploaded successfully.', files: req.files });
+        res.render('success', {files: req.files})
     } catch (err) {
         console.error(err);
         res.status(500).send('Server error.');

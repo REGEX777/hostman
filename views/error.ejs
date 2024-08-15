@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= errorCode %> - <%= errorMessage %></title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-900 text-white flex items-center justify-center h-screen">
+    <div class="text-center">
+        <h1 class="text-9xl font-bold mb-4"><%= errorCode %></h1>
+        <p class="text-2xl mb-8"><%= errorMessage %></p>
+        <a href="/" class="bg-pink-700 hover:bg-pink-900 text-white py-2 px-4 rounded">Go to Homepage</a>
+    </div>
+</body>
+</html>
