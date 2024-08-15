@@ -47,12 +47,13 @@ const upload = multer({
 
 
 router.get("/", requireLogin,(req, res)=>{
-    res.render('upload', { csrfToken: req.csrfToken() })
+    res.render('upload')
 })
 
 
 
 router.post('/', requireLogin, upload.array('files', 10), async (req, res) => {
+
     const now = new Date();
     const uploadIp = req.ip;
 

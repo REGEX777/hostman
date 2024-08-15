@@ -11,7 +11,6 @@
                         class="flex gap-10 items-center justify-center w-[90%] p-6 bg-[#111111] rounded-lg">
                         <div class="flex flex-col items-center justify-center w-full gap-10">
 
-                            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                             <div class="flex items-start justify-start flex-col w-full text-white gap-3">
                                 <label for="title">Embed Title</label>
                                 <input id="title" type="text" name="title" value="<%= post.embedMeta?.title || '' %>"

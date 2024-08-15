@@ -1,4 +1,3 @@
-// Keydetails.js
 import express from 'express';
 
 // Model import

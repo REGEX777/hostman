@@ -9,9 +9,7 @@ import LocalStrategy from 'passport-local';
 import bcrypt from 'bcryptjs';
 import User from './models/User.js';
 import flash from 'connect-flash';
-import errorLogger from './middleware/errorLogger.js';
 import colors from 'colors';
-import csrf from 'csurf';
 
 // Database Initialization
 mongoose.connect(process.env.MONGO_URI)
@@ -30,7 +28,6 @@ app.set('view engine', 'ejs');
 app.use(express.static('public'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(errorLogger);
 
 
 // Session middleware must be set up before flash
@@ -45,14 +42,6 @@ app.use(session({
 }));
 
 app.use(flash());
-// const csrfProtection = csrf();
-
-// app.use(csrfProtection);
-
-// app.use((req, res, next) => {
-//     res.locals.csrfToken = req.csrfToken();
-//     next();
-// });
 // Initialize Passport and Session
 app.use(passport.initialize());
 app.use(passport.session());
