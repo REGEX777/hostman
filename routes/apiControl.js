@@ -5,7 +5,7 @@ import mongoose from 'mongoose';
 import path from 'path'
 import fs from 'fs';
 import { requireLogin } from '../middleware/auth.js';
-
+import apiLogger from '../middleware/apiLogger.js';
 
 // Model Import
 
@@ -16,6 +16,9 @@ import User from '../models/User.js'
 import verifyApiKey from '../middleware/apiAuth.js'
 
 const router = express.Router();
+// Logger
+router.use(apiLogger);
+
 
 const storage = multer.diskStorage({
     destination: function(req, file, cb){
@@ -71,7 +74,8 @@ router.post('/upload/:apiKey', verifyApiKey, upload.array('files', 10), async (r
             fileSize: file.size,
             fileUploadTime: now,
             fileUploadIp: uploadIp,
-            fileType: file.mimetype
+            fileType: file.mimetype,
+            owner: req.user.id
         }));
 
         await Post.insertMany(posts);
