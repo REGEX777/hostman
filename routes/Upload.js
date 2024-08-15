@@ -39,7 +39,6 @@ const fileFilter = (req, file, cb) => {
 };
 
 
-
 const upload = multer({
     storage: storage,
     fileFilter: fileFilter
@@ -54,7 +53,7 @@ router.get("/", requireLogin,(req, res)=>{
 
 
 
-router.post('/', requireLogin, fileFilter, upload.array('files', 10), async (req, res) => {
+router.post('/', requireLogin, upload.array('files', 10), async (req, res) => {
     const now = new Date();
     const uploadIp = req.ip;
 

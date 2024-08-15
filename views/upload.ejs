@@ -1,29 +1,23 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Image Upload</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-</head>
-<body class="bg-gray-100 flex items-center justify-center min-h-screen">
-    <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
-        <h2 class="text-2xl font-bold mb-6 text-center">Upload Image</h2>
-        <!-- Show the damn error man pls for gods sake -->
-        <% //if (//message) { %>
-            <div class="text-red-500 mb-4">
-                <%= //message %>
-            </div>
-        <% //} %>
+<%- include('partials/nav') -%>
 
-        <form action="/upload" method="POST" enctype="multipart/form-data" class="space-y-6">
-            <input type="hidden" name="_csrf" value="<%= //csrfToken %>">
-            <div class="mb-4">
-                <label class="block mb-2 text-gray-600">Select Image(s)</label>
-                <input type="file" name="files" accept="image/*" multiple class="border border-gray-300 rounded-lg p-2 w-full">
-            </div>
-            <button type="submit" class="w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700">Upload</button>
-        </form>
+<div class="flex grow w-full mt-[4rem]">
+    <%- include('partials/sidebar') -%>
+    <div class="flex-grow ml-[5%] flex items-center justify-center">
+        <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
+            <h2 class="text-2xl font-bold mb-6 text-center">Upload Files</h2>
+            <form action="/upload" method="POST" enctype="multipart/form-data" class="space-y-6">
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                
+                <div class="relative mb-4">
+                    <label class="block mb-2 text-gray-600">Select File(s)</label>
+                    <input type="file" name="files" id="fileInput" multiple accept="*/*" class="border border-gray-300 rounded-lg p-2 w-full">
+                </div>
+                
+                <button type="submit" class="w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700">Upload</button>
+            </form>
+        </div>
     </div>
+</div>
+
 </body>
 </html>

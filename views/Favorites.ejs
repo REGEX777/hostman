@@ -1,32 +1,36 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Favorites</title>
-    <link rel="stylesheet" href="/css/styles.css">
-</head>
-<body class="bg-[#000]">
-    <div class="container mx-auto px-4 py-8">
-        <h1 class="text-3xl font-bold mb-8 text-center text-white">Your Favorite Images</h1>
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            <% if (favoriteImages.length > 0) { %>
-                <% favoriteImages.forEach(image => { %>
+<%- include('partials/nav') -%>
+
+<div class="flex grow w-full mt-[4rem]">
+    <%- include('partials/sidebar') -%>
+    <div class="flex-grow ml-[5%]">
+        <div class="flex flex-col text-white items-center justify-center w-full bg-[#000000]">
+            <div class="flex flex-col items-start justify-center w-[90%] mt-5">
+                <h1 class="text-4xl font-bold text-center mb-8">Favorite Pictures</h1>
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                    <% if (favoriteImages.length > 0) { %>
+                    <% favoriteImages.forEach(image => { %>
                     <div class="bg-[#151313] shadow-md rounded-lg overflow-hidden">
-                        <img class="w-full h-48 object-cover" src="/uploads/<%= image.fileName %>" alt="Favorite Image" />
+                        <img class="w-full h-48 object-cover" src="/uploads/<%= image.fileName %>"
+                            alt="Favorite Image" />
                         <div class="p-4">
                             <form action="/favorites/remove/<%= image._id %>" method="POST" class="flex justify-end">
-                                <button type="submit" class="bg-red-500 hover:bg-red-600 text-white py-1 px-4 rounded-lg">
+                                <button type="submit"
+                                    class="bg-red-500 hover:bg-red-600 text-white py-1 px-4 rounded-lg">
                                     Remove
                                 </button>
                             </form>
                         </div>
                     </div>
-                <% }) %>
-            <% } else { %>
-                <p class="text-center col-span-full text-gray-600">You have no favorite images.</p>
-            <% } %>
+                    <% }) %>
+                    <% } else { %>
+                    <p class="text-center col-span-full text-gray-600">You have no favorite images.</p>
+                    <% } %>
+                </div>
+            </div>
         </div>
     </div>
+</div>
+
 </body>
+
 </html>
