@@ -1,18 +1,25 @@
 import express from 'express';
-import { requireLogin } from '../middleware/auth.js';
-import ErrorLog from '../models/ErrorLog.js';
+import fs from 'fs';
+import path from 'path';
+
+import { fileURLToPath } from 'url';
+
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const router = express.Router();
-
 // GET logs page
-router.get('/', requireLogin, async (req, res) => {
-    try {
-        const logs = await ErrorLog.find().sort({ timestamp: -1 });
-        res.render('logs', { logs });
-    } catch (err) {
-        console.error(err);
-        res.status(500).send('Failed to retrieve logs.');
-    }
+router.get('/', async (req, res) => {
+    const logFilePath = path.join(__dirname, '../logs/Apilogs.txt');
+
+    fs.readFile(logFilePath, 'utf8', (err, data) => {
+        if (err) {
+            console.error('Error reading the logs file:', err);
+            return res.status(500).send('Internal Server Error');
+        }
+        res.render('logs', { logs: data });
+    });
 });
 
 export default router;
