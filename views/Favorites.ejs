@@ -4,15 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Your Favorites</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/styles.css">
 </head>
-<body class="bg-gray-100 text-gray-900">
+<body class="bg-[#000]">
     <div class="container mx-auto px-4 py-8">
-        <h1 class="text-3xl font-bold mb-8 text-center">Your Favorite Images</h1>
+        <h1 class="text-3xl font-bold mb-8 text-center text-white">Your Favorite Images</h1>
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             <% if (favoriteImages.length > 0) { %>
                 <% favoriteImages.forEach(image => { %>
-                    <div class="bg-white shadow-md rounded-lg overflow-hidden">
+                    <div class="bg-[#151313] shadow-md rounded-lg overflow-hidden">
                         <img class="w-full h-48 object-cover" src="/uploads/<%= image.fileName %>" alt="Favorite Image" />
                         <div class="p-4">
                             <form action="/favorites/remove/<%= image._id %>" method="POST" class="flex justify-end">

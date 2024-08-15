@@ -1,29 +1,33 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Albums</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-</head>
-<body class="bg-gray-900 text-white min-h-screen flex items-center justify-center">
-    <div class="bg-gray-800 p-8 rounded-lg shadow-lg w-full max-w-2xl">
-        <h1 class="text-3xl font-bold text-center mb-6">Your Albums</h1>
-        <ul>
-            <% albums.forEach(album => { %>
-                <li class="mb-4">
-                    <a href="/albums/<%= album.id %>" class="text-2xl font-bold mb-2"><%= album.name %> (<%= album.images.length %> images)</a>
-                    <div class="grid grid-cols-3 gap-4">
-                        <% album.images.forEach(image => { %>
-                            <div class="relative block">
-                                <img src="/uploads/<%= image.fileName %>" alt="Image"
-                                    class="w-full h-32 object-cover rounded-md border-2 border-gray-600">
-                            </div>
-                        <% }) %>
-                    </div>
-                </li>
-            <% }) %>
-        </ul>
+<%- include('partials/nav') -%>
+
+<div class="flex grow w-full mt-[4rem]">
+    <%- include('partials/sidebar') -%>
+    <div class="flex-grow ml-[5%]">
+        <div class="flex flex-col text-white items-center justify-center w-full bg-[#000000]">
+            <div class="flex flex-col items-start justify-center w-[90%] mt-5">
+                <h1 class="text-4xl font-bold text-center mb-8">Your Albums</h1>
+                <div class="flex flex-col gap-5 items-start justify-center">
+                    <% albums.forEach(album => { %>
+                        <div class="p-6 bg-[#151313] rounded-lg shadow-lg">
+                            <a href="/albums/<%= album.id %>"
+                                class="text-2xl font-bold text-[#FB2576] hover:underline"><%= album.name %>
+                                (<%= album.images.length %> images)</a>
+                                <div class="grid grid-cols-3 gap-4 mt-4">
+                                    <% album.images.slice(0, 3).forEach(image => { %>
+                                    <div class="block group">
+                                        <img src="/uploads/<%= image.fileName %>" alt="Image"
+                                            class="w-full h-32 object-cover rounded-md border-2 border-gray-600">
+                                    </div>
+                                    <% }) %>
+                                </div>
+                        </div>
+                    <% }) %>
+
+                </div>
+            </div>
+        </div>
     </div>
+</div>
 </body>
+
 </html>

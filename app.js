@@ -108,7 +108,6 @@ import account from './routes/Account.js'
 import logsRoute from './routes/Logs.js';
 import albumRoute from './routes/Album.js';
 import favoriteRoute from './routes/favorites.js';
-import profileRoute from './routes/profile.js';
 import embedEditorRoute from './routes/embedEditor.js';
 
 app.use('/', userRoute);
@@ -123,7 +122,6 @@ app.use('/account', account)
 app.use('/logs', logsRoute);
 app.use('/albums', albumRoute);
 app.use('/favorites', favoriteRoute);
-app.use('/profile', profileRoute);
 app.use('/embedEditor', embedEditorRoute);
 app.use((req, res) => {
     res.status(404).render('404', { url: req.originalUrl });

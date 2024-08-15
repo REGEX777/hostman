@@ -1,14 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>API Logs</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gray-900 text-white flex items-center justify-center h-screen">
-    <div class="bg-black rounded-lg shadow-lg p-6 w-4/5 h-4/5 overflow-y-scroll">
-        <pre class="whitespace-pre-wrap break-words font-mono"><%= logs %></pre>
+<%- include('partials/nav') -%>
+
+<div class="flex grow w-full mt-[4rem]">
+    <%- include('partials/sidebar') -%>
+    <div class="flex-grow ml-[5%] text-white">
+        <div class="flex items-center justify-center w-full min-h-[80vh]">
+            <div class="bg-[#0b061b] rounded-lg shadow-lg p-6 w-4/5 min-h-[70vh] overflow-y-scroll">
+                <pre class="whitespace-pre-wrap break-words font-mono rounded-lg"><%= logs %></pre>
+            </div>
+        </div>
     </div>
+</div>
 </body>
+
 </html>
