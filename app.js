@@ -11,6 +11,7 @@ import User from './models/User.js';
 import flash from 'connect-flash';
 import errorLogger from './middleware/errorLogger.js';
 import colors from 'colors';
+import csrf from 'csurf';
 
 // Database Initialization
 mongoose.connect(process.env.MONGO_URI)
@@ -31,6 +32,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(errorLogger);
 
+
 // Session middleware must be set up before flash
 app.use(session({
     secret: process.env.SESSION_SECRET,
@@ -43,13 +45,12 @@ app.use(session({
 }));
 
 app.use(flash());
-// const csrfProtection = csrf();
+const csrfProtection = csrf();
 
-// app.use(csrfProtection);
+app.use(csrfProtection);
 
 app.use((req, res, next) => {
-    // res.locals.csrfToken = req.csrfToken();
-    res.locals.csrfToken = 'jhvfjsdb';
+    res.locals.csrfToken = req.csrfToken();
     next();
 });
 // Initialize Passport and Session
