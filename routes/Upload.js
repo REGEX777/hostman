@@ -6,7 +6,6 @@ import path from 'path'
 import fs from 'fs';
 import { requireLogin } from '../middleware/auth.js';
 
-
 // Model Import
 
 import Post from '../models/Post.js';
@@ -48,7 +47,7 @@ const upload = multer({
 
 
 router.get("/", requireLogin,(req, res)=>{
-    res.render('upload')
+    res.render('upload', { csrfToken: req.csrfToken() })
 })
 
 

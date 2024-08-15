@@ -6,7 +6,7 @@
         <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
             <h2 class="text-2xl font-bold mb-6 text-center">Upload Files</h2>
             <form action="/upload" method="POST" enctype="multipart/form-data" class="space-y-6">
-                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                <input type="hidden" name="_csrf" value="<%= //csrfToken %>">
                 <div class="relative mb-4">
                     <label class="block mb-2 text-gray-600">Select File(s)</label>
                     <input type="file" name="files" id="fileInput" multiple accept="*/*" class="border border-gray-300 rounded-lg p-2 w-full">

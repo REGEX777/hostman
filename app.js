@@ -45,14 +45,14 @@ app.use(session({
 }));
 
 app.use(flash());
-const csrfProtection = csrf();
+// const csrfProtection = csrf();
 
-app.use(csrfProtection);
+// app.use(csrfProtection);
 
-app.use((req, res, next) => {
-    res.locals.csrfToken = req.csrfToken();
-    next();
-});
+// app.use((req, res, next) => {
+//     res.locals.csrfToken = req.csrfToken();
+//     next();
+// });
 // Initialize Passport and Session
 app.use(passport.initialize());
 app.use(passport.session());
@@ -126,6 +126,9 @@ app.use('/favorites', favoriteRoute);
 app.use('/embedEditor', embedEditorRoute);
 app.use((req, res) => {
     res.status(404).render('404', { url: req.originalUrl });
+});
+app.use((req, res) => {
+    res.status(500).render('500', { url: req.originalUrl });
 });
 
 const PORT = process.env.PORT;
