@@ -115,7 +115,7 @@ import uploadRoute from './routes/Upload.js';
 import account from './routes/Account.js'
 import logsRoute from './routes/Logs.js';
 import albumRoute from './routes/Album.js';
-import favoriteRoute from './routes/favorites.js';
+import favoriteRoute from './routes/Favorites.js';
 import embedEditorRoute from './routes/embedEditor.js';
 import settingRoute from './routes/Settings.js'
 
