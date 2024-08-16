@@ -10,7 +10,7 @@ import bcrypt from 'bcryptjs';
 import User from './models/User.js';
 import flash from 'connect-flash';
 import colors from 'colors';
-const { StatusCodes, getReasonPhrase } = require('http-status-codes');
+import { StatusCodes, getReasonPhrase } from 'http-status-codes';
 
 // Database Initialization
 mongoose.connect(process.env.MONGO_URI)
@@ -29,19 +29,18 @@ app.set('view engine', 'ejs');
 app.use(express.static('public'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-const { StatusCodes, getReasonPhrase } = require('http-status-codes');
 
-app.use((req, res) => {
-    const errorCode = StatusCodes.NOT_FOUND;
-    const errorMessage = getReasonPhrase(errorCode);
-    res.status(errorCode).render('error', { errorCode, errorMessage });
-});
+// app.use((req, res) => {
+//     const errorCode = StatusCodes.NOT_FOUND;
+//     const errorMessage = getReasonPhrase(errorCode);
+//     res.status(errorCode).render('error', { errorCode, errorMessage });
+// });
 
-app.use((err, req, res, next) => {
-    const errorCode = err.status || StatusCodes.INTERNAL_SERVER_ERROR;
-    const errorMessage = getReasonPhrase(errorCode);
-    res.status(errorCode).render('error', { errorCode, errorMessage });
-});
+// app.use((err, req, res, next) => {
+//     const errorCode = err.status || StatusCodes.INTERNAL_SERVER_ERROR;
+//     const errorMessage = getReasonPhrase(errorCode);
+//     res.status(errorCode).render('error', { errorCode, errorMessage });
+// });
 
 // Session middleware must be set up before flash
 app.use(session({

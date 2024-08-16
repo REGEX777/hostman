@@ -14,14 +14,36 @@
 
 <body class="bg-[#000000] h-screen flex flex-col">
     <!-- Navigation -->
-    <div class="flex items-center justify-center w-full h-[4rem] bg-[#160008] fixed top-0 z-10">
+    <div class="flex items-center justify-center w-full h-[4rem] bg-[#160008] fixed top-0 z-10 font-poppins">
         <div class="flex items-center justify-between w-[95%] h-full">
-            <div class="flex items-center justify-center flex-row gap-5">
-                <div class="w-10 h-10 rounded-full bg-gray-400"></div>
-                <p class="text-xl font-semibold text-white">Hostman</p>
+            <div class="flex items-center justify-between flex-row gap-5 text-white w-full 700px:w-fit">
+                <p class="text-xl font-semibold">Hostman</p>
+                <p id="hamburger" class="text-2xl"><i class="fa-solid fa-bars"></i></p>
             </div>
-            <a href="/upload" class="h-10 flex items-center justify-center w-[7rem] font-semibold text-lg text-white rounded-lg bg-[#8B1743]">
-                Upload +
-            </a>
+            <div id="links" class="hidden 700px:flex 1200px:hidden items-center justify-center links gap-5 text-white h-full">
+                <a href="/albums">Albums</a>
+                <a href="/account">API</a>
+                <a href="/logs">Logs</a>
+                <a href="/settings">Settings</a>
+                <a href="/upload" class="h-10 flex items-center justify-center w-[7rem] font-semibold text-lg text-white rounded-lg bg-[#8B1743]">
+                    Upload +
+                </a>
+            </div>
+
         </div>
     </div>
+
+
+
+    <script>
+        let hamburger = document.getElementById('hamburger');
+        let link = document.getElementById('links')
+        let button = document.getElementById('button')
+
+        hamburger.addEventListener('click', () => {
+            link.classList.toggle('hidden')
+            link.classList.toggle('flex')
+            button.classList.toggle('hidden')
+            button.classList.toggle('block')
+        });
+    </script>

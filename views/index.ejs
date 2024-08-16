@@ -3,9 +3,9 @@
 <!-- Main Body -->
 <div class="flex grow w-full mt-[4rem]">
     <%- include('partials/sidebar') -%>
-    <div class="flex-grow ml-[5%] overflow-auto">
+    <div class="flex-grow 1200px:ml-[5%] overflow-auto">
         <div class="flex items-center justify-center w-full bg-[#000000]">
-            <div class="grid grid-cols-3 w-[90%] items-start justify-center gap-10 py-10">
+            <div class="grid grid-cols-1 mid-small2:grid-cols-2 mc-bc:grid-cols-3 w-[90%] items-start justify-center gap-5 mid-small3:gap-10 py-10">
                 <% posts.forEach((post) => { %>
                 <div class="w-full flex-col items-center justify-center min-h-[20rem] bg-[#151313] rounded-lg">
                     <img src="/uploads/<%= post.fileName %>" class="w-full" alt="<%= post.fileName %>">
@@ -14,21 +14,21 @@
                             <input type="text" value="http://localhost:7999/post/<%= post.fileName %>" id="myInput"
                                 hidden>
                             <button onclick="copyToClipboard()"
-                                class="flex items-center justify-center p-[0.7rem] bg-[#8B174352] rounded-lg text-[#FB2576]">
+                                class="flex items-center justify-center p-[0.7rem] text-sm mid-small:text-base bg-[#8B174352] rounded-lg text-[#FB2576]">
                                 <i class="fa-solid fa-copy"></i>
                             </button>
                             <a href="/post/<%= post.fileName %>" target="_blank"
-                                class="flex items-center justify-center p-[0.7rem] bg-[#8B174352] rounded-lg text-[#FB2576]">
+                                class="flex items-center justify-center p-[0.7rem] text-sm mid-small:text-base bg-[#8B174352] rounded-lg text-[#FB2576]">
                                 <i class="fa-solid fa-arrow-up-right-from-square"></i>
                             </a>
                             <a href="/embedEditor/<%= post._id %>" target="_blank"
-                                class="flex items-center justify-center p-[0.7rem] bg-[#8B174352] rounded-lg text-[#FB2576]">
+                                class="flex items-center justify-center p-[0.7rem] text-sm mid-small:text-base bg-[#8B174352] rounded-lg text-[#FB2576]">
                                 <i class="fa-solid fa-pencil"></i>
                             </a>
                             <button data-post-id="<%= post._id %>"
                                 data-favorite="<%= user.favorites.includes(post._id.toString()) ? 'true' : 'false' %>"
                                 onclick="toggleFavorite(this)"
-                                class="flex items-center justify-center p-[0.7rem] bg-[#8B174352] rounded-lg text-[#FB2576]">
+                                class="flex items-center justify-center p-[0.7rem] text-sm mid-small:text-base bg-[#8B174352] rounded-lg text-[#FB2576]">
                                 <% if (user.favorites.includes(post._id.toString())) { %>
                                 <i class="fa-solid fa-star text-yellow-500"></i>
                                 <% } else { %>
@@ -39,7 +39,7 @@
                     </div>
                     <div class="flex flex-col items-center justify-center w-full mb-5">
                         <a href="/post/<%= post.fileName %>" target="_blank"
-                            class="text-xl font-semibold text-white"><%= post.fileName %></a>
+                            class="text-lg mid-small:text-xl font-semibold text-white text-center "><%= post.fileName %></a>
                         <p class="text-[#777777]">Uploaded at <span class="upload-time"
                                 data-time="<%= post.fileUploadTime %>"></span></p>
                     </div>
