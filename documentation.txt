@@ -1,0 +1,33 @@
+Project Setup Guide (aka How to Get Stuff Running)
+Hey there! Ready to get your project up and running on a Linux box? Sweet! Let’s get you sorted with Node.js, Nginx, and all that stuff.
+What You’ll Need
+Before you start, make sure that you’ve:
+A Linux OS (like Ubuntu, Debiano)
+Terminal access
+Getting Started
+Step 1: System Update & Upgrade
+Firstly we will make sure that your system is up to date. Run this command:
+sudo apt update && sudo apt upgrade -y
+Grab a coffee while it does its thing.
+Step 2: Install Node.js & npm
+You’re gonna need Node.js (version 21, the LTE version) and npm.
+Install NVM
+First, let’s get NVM installed:
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
+Once that’s done, reload your shell:
+source ~/.bashrc
+Install Node.js (v21.x)
+Now that you’ve got NVM, let’s install Node.js version 21:
+nvm install 21
+nvm use 21
+Check if it’s working:
+node -v
+npm -v
+You're good if you see something like 21.XX
+Step 3: Clone That Repo
+Time to grab your project from GitHub (or wherever it’s hiding):
+git clone https://github.com/REGEX777/hostman.git
+cd hostman
+Step 4: Install Project Dependencies
+Now that you’re in the project folder, let’s install the necessary Node.js packages:
+npm install
