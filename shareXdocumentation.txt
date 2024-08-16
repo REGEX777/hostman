@@ -1,0 +1,42 @@
+Let's setup shareX which will be used to upload our screenshots to hostman.
+
+Step 1: Installing ShareX
+You can install the shareX setup from here. 
+
+Step 2: Configure ShareX
+Once your server is ready we will setup shareX to use it.
+
+2.1 Open ShareX and Navigate to Custom Uploader Settings
+Fire up ShareX.
+
+Go to Destinations > Custom uploader settings...
+
+
+2.2 Add a New Custom Uploader
+Click the Add button to create a new custom uploader.
+
+Name it whatever you like—something catchy like "MyUploader" works.
+
+Make sure you enter file in the File form name
+
+
+2.3 Configure the Upload Settings
+Here’s where the magic happens:
+
+Request Type: Set this to POST.
+
+URL: This should be your upload endpoint. Something like http://yourdomain.com/api/yourapikey.
+
+File Form Name: Set this to file. This matches the name used in our script.
+
+2.4 Test the Configuration
+Hit the Test button to make sure everything's working. If it is, you should see a URL returned that points to your uploaded file. If not, double-check your settings or check the logs on your server to see what's up.
+
+Step 3: Upload and Celebrate!
+With everything configured, you can now use ShareX to upload images directly to your server. Just take a screenshot or drag a file into ShareX, and it’ll be uploaded to your custom endpoint. The link will be copied to your clipboard, ready to share!
+
+Troubleshooting
+Uploads not working? Double-check your server logs for errors, and make sure the upload directory exists and is writable.
+
+Conclusion
+And that's it! You've set up a custom uploader for ShareX. Now you can host all your screenshots and files on your own server. High five!
