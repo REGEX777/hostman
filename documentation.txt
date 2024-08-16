@@ -1,39 +1,81 @@
 Project Setup Guide (aka How to Get Stuff Running)
 Hey there! Ready to get your project up and running on a Linux box? Sweet! Let’s get you sorted with Node.js, Nginx, and all that stuff.
+Now that you’ve got NVM, let’s install Node.js version 21:
+nvm install 21
+nvm use 21
+Check if it’s working:
+node -v
+npm -v
+You're good if you see something like 21.XX
+Step 3: Clone That Repo
+Time to grab your project from GitHub (or wherever it’s hiding):
+git clone https://github.com/REGEX777/hostman.git
+cd hostman
+Step 4: Install Project Dependencies
+Now that you’re in the project folder, let’s install the necessary Node.js packages:
+npm install
+This can can some time depending on the server specs.
+Step 5: Update Project Packages (Optional)
+If you wanna make sure all your packages are up-to-date, run this:
+npm update
+You’ll be running the latest packages.
+Step 6: Install and Set Up Nginx
+Nginx is gonna be your web server, so let’s install it.
+Install Nginx
+Get Nginx up and running:
+sudo apt install nginx -y
+Nginx Config
 Open up the default Nginx config file:
 sudo nano /etc/nginx/sites-available/default
-Paste this in (add your domain):
-codeserver {
+Generate an SSL certificate first, here is the guide.
+Paste this in (add your domain): 
+YOU NEED TO GENERATE A SSL CERTIFICATE FIRST
+After all that, replace the www.yourdomain.com with your own domain.
+server {
+    # Redirect HTTP to HTTPS
     listen 80;
-    server_name urdomain.com www.urdomain.com;
+    server_name yourdomain.com www.yourdomain.com;
 ​
     location / {
-        proxy_pass http://localhost:7999;
-        proxy_http_version 1.1;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection 'upgrade';
-        proxy_set_header Host $host;
-        proxy_cache_bypass $http_upgrade;
+        return 301 https://$host$request_uri;
     }
 }
+​
+server {
+    # Listen for HTTPS traffic
+    listen 443 ssl;
+    server_name yourdomain.com www.yourdomain.com;
+​
+    # SSL certificate and key
+    ssl_certificate /etc/letsencrypt/live/yourdomain.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/yourdomain.com/privkey.pem;
+​
+    # SSL settings
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_prefer_server_ciphers on;
+    ssl_ciphers HIGH:!aNULL:!MD5;
+​
+    # Improve HTTPS security (optional)
+    add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
+    add_header X-Frame-Options DENY;
+    add_header X-Content-Type-Options nosniff;
+​
+    # Proxy pass to your application on port 7999
+    location / {
+        proxy_pass http://localhost:7999;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+​
+    # Optionally handle 404 pages
+    error_page 404 /404.html;
+    location = /404.html {
+        internal;
+    }
+}
+​
 Save it (CTRL + X, then Y, then Enter) and test the config:
 sudo nginx -t
 If all’s good, restart Nginx:
-sudo systemctl restart nginx
-PM2 Installation
-Let's install PM2 which is pretty handy for our usecase:
-npm install pm2 -g
-Step 7: Start Your App
-pm2 start npm --name "yourappname" -- start
-Swap out "yourappname" with whatever you wanna call your app. (ex: imagehostapp)
-Step 8: Edit your internet.json file:
-Go to the root directory of the cloned github repository and run the following command:
-nano internet.json
-You'll see something like this
-{
-    "domain": "http://yourdomain.com/"
-}
-Replace the http://yourdomain.com with your domain.
-​
-Step 9: Check your website out:
-Your website should now be up and running on the configured domain!
