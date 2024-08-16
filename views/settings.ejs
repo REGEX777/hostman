@@ -1,24 +1,40 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Config</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
-</head>
-<body class="flex items-center justify-center min-h-screen bg-gray-100">
-    <div class="w-full max-w-xl p-5 bg-white rounded-lg shadow-lg">
-        <h1 class="text-2xl font-bold mb-4">Edit Config</h1>
-        <form action="/save-config" method="POST">
-            <% for (let key in config) { %>
-                <div class="mb-4">
-                    <label class="block text-gray-700 font-bold mb-2" for="<%= key %>">
-                        <%= key %>
-                    </label>
-                    <input class="w-full p-2 border rounded" type="text" id="<%= key %>" name="<%= key %>" value="<%= config[key] %>">
+<%- include('partials/nav') -%>
+
+<div class="flex grow w-full mt-[4rem]">
+    <%- include('partials/sidebar') -%>
+    <div class="flex-grow ml-[5%] flex items-center justify-center">
+        <div class="w-full max-w-xl p-5 bg-[#151313] text-white font-poppins rounded-lg shadow-lg">
+            <h1 class="text-2xl font-bold mb-4">Edit Config</h1>
+            <form action="/settings" method="POST">
+                <% function renderInputs(obj, parentKey = '') { %>
+                    <% for (let key in obj) { %>
+                        <% let value = obj[key]; %>
+                        <% let fieldName = parentKey ? `${parentKey}[${key}]` : key; %>
+                        <% if (typeof value === 'object' && value !== null) { %>
+                            <fieldset class="mb-4 border border-[#8B1743] p-4 rounded">
+                                <legend class="text-lg font-semibold mb-2"><%= key %></legend>
+                                <%= renderInputs(value, fieldName) %>
+                            </fieldset>
+                        <% } else { %>
+                            <div class="mb-4">
+                                <label class="block text-white font-bold mb-2" for="<%= fieldName %>">
+                                    <%= key %>
+                                </label>
+                                <input class="w-full p-2 border rounded text-white border-[#0f0f0f] bg-[#000]" type="text" id="<%= fieldName %>" name="<%= fieldName %>" value="<%= value %>">
+                            </div>
+                        <% } %>
+                    <% } %>
+                <% } %>
+                <%= renderInputs(config) %>
+                <div class="flex justify-end">
+                    <button class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-700" type="submit">
+                        Save Config
+                    </button>
                 </div>
-            <% } %>
-        </form>
+            </form>
+        </div>
     </div>
+</div>
+
 </body>
 </html>

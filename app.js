@@ -117,6 +117,7 @@ import logsRoute from './routes/Logs.js';
 import albumRoute from './routes/Album.js';
 import favoriteRoute from './routes/favorites.js';
 import embedEditorRoute from './routes/embedEditor.js';
+import settingRoute from './routes/Settings.js'
 
 app.use('/', userRoute);
 app.use('/apidetails', keyDetails);
@@ -131,6 +132,7 @@ app.use('/logs', logsRoute);
 app.use('/albums', albumRoute);
 app.use('/favorites', favoriteRoute);
 app.use('/embedEditor', embedEditorRoute);
+app.use('/settings', settingRoute);
 app.use((req, res) => {
     res.status(404).render('404', { url: req.originalUrl });
 });
