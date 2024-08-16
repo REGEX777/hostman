@@ -11,6 +11,8 @@ import User from './models/User.js';
 import flash from 'connect-flash';
 import colors from 'colors';
 import { StatusCodes, getReasonPhrase } from 'http-status-codes';
+import fs from 'fs';
+
 
 // Database Initialization
 mongoose.connect(process.env.MONGO_URI)
@@ -41,6 +43,10 @@ app.use(express.urlencoded({ extended: true }));
 //     const errorMessage = getReasonPhrase(errorCode);
 //     res.status(errorCode).render('error', { errorCode, errorMessage });
 // });
+
+const config = JSON.parse(fs.readFileSync('config.json', 'utf-8'));
+
+app.locals.config = config
 
 // Session middleware must be set up before flash
 app.use(session({
