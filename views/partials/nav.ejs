@@ -14,23 +14,22 @@
 
 <body class="bg-[#000000] h-screen flex flex-col">
     <!-- Navigation -->
-    <div class="flex items-center justify-center w-full h-[4rem] bg-[#160008] fixed top-0 z-10 font-poppins">
-        <div class="flex items-center justify-between w-[95%] h-full">
+    <div class="flex flex-col 700px:flex-row items-center justify-between w-full min-h-[4rem] bg-[#160008] fixed top-0 z-10 font-poppins py-4 gap-4 700px:gap-0 px-10">
+        <div class="flex flex-col 700px:flex-row items-center justify-center w-full 700px:w-fit h-full">
             <div class="flex items-center justify-between flex-row gap-5 text-white w-full 700px:w-fit">
                 <p class="text-xl font-semibold">Hostman</p>
-                <p id="hamburger" class="text-2xl"><i class="fa-solid fa-bars"></i></p>
+                <p id="hamburger" class="text-2xl flex 700px:hidden"><i class="fa-solid fa-bars"></i></p>
             </div>
-            <div id="links" class="hidden 700px:flex 1200px:hidden items-center justify-center links gap-5 text-white h-full">
-                <a href="/albums">Albums</a>
-                <a href="/account">API</a>
-                <a href="/logs">Logs</a>
-                <a href="/settings">Settings</a>
-                <a href="/upload" class="h-10 flex items-center justify-center w-[7rem] font-semibold text-lg text-white rounded-lg bg-[#8B1743]">
-                    Upload +
-                </a>
-            </div>
-
         </div>
+        <div id="links" class="hidden flex-col 700px:flex-row 700px:flex 1200px:hidden items-start 700px:items-center justify-center links gap-3 700px:gap-5 text-white h-full w-[95%] 700px:w-fit">
+            <a href="/albums">Albums</a>
+            <a href="/account">API</a>
+            <a href="/logs">Logs</a>
+            <a href="/settings">Settings</a>
+        </div>
+        <a href="/upload" class="h-10 flex items-center justify-center w-[7rem] font-semibold text-lg text-white rounded-lg bg-[#8B1743]">
+            Upload +
+        </a>
     </div>
 
 
