@@ -1012,6 +1012,10 @@ video {
   max-width: 28rem;
 }
 
+.max-w-xl {
+  max-width: 36rem;
+}
+
 .flex-grow {
   flex-grow: 1;
 }
@@ -1369,6 +1373,10 @@ video {
   padding: 0.7rem;
 }
 
+.p-5 {
+  padding: 1.25rem;
+}
+
 .px-3 {
   padding-left: 0.75rem;
   padding-right: 0.75rem;
@@ -1648,6 +1656,11 @@ video {
 .hover\:bg-red-700:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(185 28 28 / var(--tw-bg-opacity));
+}
+
+.hover\:bg-blue-700:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(29 78 216 / var(--tw-bg-opacity));
 }
 
 .hover\:text-black:hover {
