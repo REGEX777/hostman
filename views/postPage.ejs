@@ -3,8 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="/css/styles.css">
+    <title><%= post.title %></title>
+    <meta name="description" content="<%= post.description %>">
+    <meta property="og:title" content="<%= post.embedTitle %>">
+    <meta property="og:description" content="<%= post.embedDescription %>">
+    <meta property="og:image" content="<%= post.embedThumbnailUrl %>">
+    <meta name="twitter:title" content="<%= post.embedTitle %>">
+    <meta name="twitter:description" content="<%= post.embedDescription %>">
+    <meta name="twitter:image" content="<%= post.embedThumbnailUrl %>">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="theme-color" content="<%= post.embedColor %>">
+    <meta property="og:author" content="<%= post.embedAuthorName %>">
+    <meta name="twitter:creator" content="<%= post.embedAuthorName %>">
+    <meta property="og:url" content="<%= post.fileName %>">
 </head>
 <body class="bg-[#161F29]">
     <div class="flex h-screen items-center justify-start flex-col">

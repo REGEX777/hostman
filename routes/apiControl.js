@@ -6,6 +6,7 @@ import path from 'path'
 import fs from 'fs';
 import { requireLogin } from '../middleware/auth.js';
 import apiLogger from '../middleware/apiLogger.js';
+import internet from '../internet.json'
 
 // Model Import
 
@@ -60,33 +61,32 @@ router.get("/", (req, res)=>{
 
 
 
-router.post('/upload/:apiKey', verifyApiKey, upload.array('files', 10), async (req, res) => {
+router.post('/upload/:apiKey', verifyApiKey, upload.single('file'), async (req, res) => {
     const now = new Date();
     const uploadIp = req.ip;
 
-    if (!req.files || req.files.length === 0) {
-        return res.status(400).send('No files were uploaded.');
+    if (!req.file) {
+        return res.status(400).send('No file was uploaded.');
     }
 
     try {
-        const posts = req.files.map(file => ({
-            fileName: file.filename,
-            fileSize: file.size,
+        const post = {
+            fileName: req.file.filename,
+            fileSize: req.file.size,
             fileUploadTime: now,
             fileUploadIp: uploadIp,
-            fileType: file.mimetype,
+            fileType: req.file.mimetype,
             owner: req.user.id
-        }));
+        };
 
-        await Post.insertMany(posts);
-        console.log('[INFORMATION]> Images uploaded successfully and details were saved in the database.');
-        res.json({ message: 'Files have been uploaded successfully.', files: req.files });
+        await Post.create(post);
+        console.log('[INFORMATION]> Image uploaded successfully and details were saved in the database.');
+        res.status(200).send(`${internet.domain}/${req.file.filename}`);
     } catch (err) {
         console.error(err);
         res.status(500).send('Server error.');
     }
 });
-
 
 router.delete('/post/:id', async (req, res)=>{
     try {
