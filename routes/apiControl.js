@@ -6,7 +6,7 @@ import path from 'path'
 import fs from 'fs';
 import { requireLogin } from '../middleware/auth.js';
 import apiLogger from '../middleware/apiLogger.js';
-import internet from '../internet.json'
+import internet from '../internet.json' assert { type: 'json' };
 
 // Model Import
 
@@ -81,7 +81,7 @@ router.post('/upload/:apiKey', verifyApiKey, upload.single('file'), async (req, 
 
         await Post.create(post);
         console.log('[INFORMATION]> Image uploaded successfully and details were saved in the database.');
-        res.status(200).send(`${internet.domain}/${req.file.filename}`);
+        res.status(200).send(`${internet.domain}post/${req.file.filename}`);
     } catch (err) {
         console.error(err);
         res.status(500).send('Server error.');
