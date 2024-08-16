@@ -4,9 +4,11 @@ import Album from '../models/Album.js';
 import Post from '../models/Post.js';
 
 const router = express.Router();
+import { requireLogin } from '../middleware/auth.js';
+
 
 // GET - Create Album page
-router.get('/create', async (req, res) => {
+router.get('/create', requireLogin, async (req, res) => {
     try {
         const userImages = await Post.find({});
         res.render('createAlbum', { userImages });
@@ -16,7 +18,7 @@ router.get('/create', async (req, res) => {
     }
 });
 
-router.post('/create', async (req, res) => {
+router.post('/create', requireLogin, async (req, res) => {
     try {
         const { name, imageIds } = req.body;
         // convert the ids to the fucking object ids man pls for fuck sakes
@@ -48,7 +50,7 @@ router.post('/create', async (req, res) => {
 });
 
 
-router.get('/', async (req, res) => {
+router.get('/', requireLogin, async (req, res) => {
     try {
         const albums = await Album.find({ user: req.user._id }).populate('images');
         res.render('albums', { albums });
@@ -58,7 +60,7 @@ router.get('/', async (req, res) => {
     }
 });
 
-router.get('/:id', async (req, res) => {
+router.get('/:id', requireLogin, async (req, res) => {
     try {
         const id = req.params.id;
 

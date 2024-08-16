@@ -1,11 +1,13 @@
 import express from 'express';
 import User from '../models/User.js';
 import Post from '../models/Post.js';
+import { requireLogin } from '../middleware/auth.js';
+
 
 const router = express.Router();
 //POST - image toggle
 // toggle the postssssssss
-router.post('/toggle/:imageId', async (req, res) => {
+router.post('/toggle/:imageId', requireLogin, async (req, res) => {
     try {
         const { imageId } = req.params;
         const user = req.user;
@@ -31,7 +33,7 @@ router.post('/toggle/:imageId', async (req, res) => {
 });
 
 // GET - View all favorite images
-router.get('/', async (req, res) => {
+router.get('/', requireLogin, async (req, res) => {
     try {
         const user = req.user;
         const favoriteImages = await Post.find({ _id: { $in: user.favorites } });

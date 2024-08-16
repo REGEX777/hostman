@@ -1,9 +1,10 @@
 import express from 'express';
 import Post from '../models/Post.js';
+import { requireLogin } from '../middleware/auth.js';
 
 const router = express.Router();
 
-router.get('/:id', async (req, res) => {
+router.get('/:id',requireLogin, async (req, res) => {
     try {
         const post = await Post.findById(req.params.id);
         if (!post) {
@@ -15,7 +16,7 @@ router.get('/:id', async (req, res) => {
     }
 });
 
-router.post('/:id', async (req, res) => {
+router.post('/:id',requireLogin, async (req, res) => {
     const { title, description, color } = req.body;
     try {
         let post = await Post.findById(req.params.id);

@@ -3,7 +3,8 @@ import express from 'express';
 
 const router = express.Router();
 
-router.get("/", (req, res) => {
+import { requireLogin } from '../middleware/auth.js';
+router.get("/", requireLogin,(req, res) => {
     res.render('api')
 });
 
