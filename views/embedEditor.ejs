@@ -7,48 +7,72 @@
             <div class="w-[95%] flex flex-col items-start justify-start gap-10">
                 <p class="text-white text-2xl font-medium">Edit Embed Details</p>
                 <div class="flex items-center justify-between h-auto w-[90%]">
-                    <form action="/embedEditor/<%= post._id %>" method="POST"
+                    <form action="/embedEditor" method="POST"
                         class="flex gap-10 items-center justify-center w-[90%] p-6 bg-[#111111] rounded-lg">
                         <div class="flex flex-col items-center justify-center w-full gap-10">
 
                             <div class="flex items-start justify-start flex-col w-full text-white gap-3">
                                 <label for="title">Embed Title</label>
-                                <input id="title" type="text" name="title" value="<%= post.embedMeta?.title || '' %>"
+                                <input id="title" type="text" name="title" value="<%= post.title || '' %>"
                                     class="w-full h-12 bg-[#181818] text-white px-4 rounded-lg outline-none"
                                     placeholder="Enter embed title">
                             </div>
+
                             <div class="flex items-start justify-start flex-col w-full text-white gap-3">
                                 <label for="description">Embed Description</label>
                                 <textarea id="description" name="description"
                                     class="w-full h-28 bg-[#181818] text-white px-4 py-2 rounded-lg outline-none"
-                                    placeholder="Enter embed description"><%= post.embedMeta?.description || '' %></textarea>
+                                    placeholder="Enter embed description"><%= post.description || '' %></textarea>
                             </div>
+
                             <div class="flex items-start justify-start flex-col w-full text-white gap-3">
                                 <label for="footer">Embed Footer</label>
-                                <input id="footer" type="text" name="footer" value="<%= post.embedMeta?.footer || '' %>"
+                                <input id="footer" type="text" name="footer" value="<%= post.footer || '' %>"
                                     class="w-full h-12 bg-[#181818] text-white px-4 rounded-lg outline-none"
                                     placeholder="Enter embed footer">
                             </div>
+
                             <div class="flex items-start justify-start flex-col w-full text-white gap-3">
                                 <label for="color">Embed Color</label>
-                                <input id="color" type="color" name="color"
-                                    value="<%= post.embedMeta?.color || '#ffffff' %>"
+                                <input id="color" type="color" name="color" value="<%= post.color || '#ffffff' %>"
                                     class="w-full h-12 bg-[#181818] text-white px-4 rounded-lg outline-none">
                             </div>
+
+                            <div class="flex items-start justify-start flex-col w-full text-white gap-3">
+                                <label for="thumbnailUrl">Embed Thumbnail URL</label>
+                                <input id="thumbnailUrl" type="text" name="thumbnailUrl" value="<%= post.thumbnailUrl || '' %>"
+                                    class="w-full h-12 bg-[#181818] text-white px-4 rounded-lg outline-none"
+                                    placeholder="Enter embed thumbnail URL">
+                            </div>
+
+                            <div class="flex items-start justify-start flex-col w-full text-white gap-3">
+                                <label for="authorName">Embed Author Name</label>
+                                <input id="authorName" type="text" name="authorName" value="<%= post.authorName || '' %>"
+                                    class="w-full h-12 bg-[#181818] text-white px-4 rounded-lg outline-none"
+                                    placeholder="Enter embed author name">
+                            </div>
+
+                            <div class="flex items-start justify-start flex-col w-full text-white gap-3">
+                                <label for="authorIconUrl">Embed Author Icon URL</label>
+                                <input id="authorIconUrl" type="text" name="authorIconUrl" value="<%= post.authorIconUrl || '' %>"
+                                    class="w-full h-12 bg-[#181818] text-white px-4 rounded-lg outline-none"
+                                    placeholder="Enter embed author icon URL">
+                            </div>
+
+                            <div class="flex items-start justify-start flex-col w-full text-white gap-3">
+                                <label for="timestamp">Embed Timestamp</label>
+                                <input id="timestamp" type="datetime-local" name="timestamp" value="<%= post.timestamp ? post.timestamp.toISOString().slice(0, 16) : '' %>"
+                                    class="w-full h-12 bg-[#181818] text-white px-4 rounded-lg outline-none">
+                            </div>
+
                             <button type="submit"
                                 class="w-[10rem] bg-[#3B071B] text-white font-medium h-[2.5rem] rounded-lg">
                                 Save Changes
                             </button>
                         </div>
-                        <div class="w-[50%]">
-                            <img class="" src="/uploads/<%= post.fileName %>" alt="" srcset="">
-                        </div>
-
                     </form>
-
                 </div>
             </div>
-
         </div>
     </div>
 </div>

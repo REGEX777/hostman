@@ -32,10 +32,6 @@ const postSchema = new mongoose.Schema({
         type: String,
         default: '#FFFFFF',
     },
-    embedThumbnailUrl: {
-        type: String,
-        default: '',
-    },
     embedAuthorName: {
         type: String,
         default: '',
