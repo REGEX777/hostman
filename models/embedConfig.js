@@ -1,10 +1,6 @@
 import mongoose from 'mongoose';
 
 const embedConfigSchema = new mongoose.Schema({
-    title: {
-        type: String,
-        default: '',
-    },
     description: {
         type: String,
         default: '',
@@ -17,10 +13,6 @@ const embedConfigSchema = new mongoose.Schema({
         type: String,
         default: '#FFFFFF',
     },
-    thumbnailUrl: {
-        type: String,
-        default: '',
-    },
     authorName: {
         type: String,
         default: '',
@@ -28,11 +20,7 @@ const embedConfigSchema = new mongoose.Schema({
     authorIconUrl: {
         type: String,
         default: '',
-    },
-    timestamp: {
-        type: Date,
-        default: null,
-    },
+    }
 });
 
 const EmbedConfig = mongoose.model('EmbedConfig', embedConfigSchema);

@@ -12,13 +12,6 @@
                         <div class="flex flex-col items-center justify-center w-full gap-10">
 
                             <div class="flex items-start justify-start flex-col w-full text-white gap-3">
-                                <label for="title">Embed Title</label>
-                                <input id="title" type="text" name="title" value="<%= post.title || '' %>"
-                                    class="w-full h-12 bg-[#181818] text-white px-4 rounded-lg outline-none"
-                                    placeholder="Enter embed title">
-                            </div>
-
-                            <div class="flex items-start justify-start flex-col w-full text-white gap-3">
                                 <label for="description">Embed Description</label>
                                 <textarea id="description" name="description"
                                     class="w-full h-28 bg-[#181818] text-white px-4 py-2 rounded-lg outline-none"
@@ -39,13 +32,6 @@
                             </div>
 
                             <div class="flex items-start justify-start flex-col w-full text-white gap-3">
-                                <label for="thumbnailUrl">Embed Thumbnail URL</label>
-                                <input id="thumbnailUrl" type="text" name="thumbnailUrl" value="<%= post.thumbnailUrl || '' %>"
-                                    class="w-full h-12 bg-[#181818] text-white px-4 rounded-lg outline-none"
-                                    placeholder="Enter embed thumbnail URL">
-                            </div>
-
-                            <div class="flex items-start justify-start flex-col w-full text-white gap-3">
                                 <label for="authorName">Embed Author Name</label>
                                 <input id="authorName" type="text" name="authorName" value="<%= post.authorName || '' %>"
                                     class="w-full h-12 bg-[#181818] text-white px-4 rounded-lg outline-none"
@@ -57,12 +43,6 @@
                                 <input id="authorIconUrl" type="text" name="authorIconUrl" value="<%= post.authorIconUrl || '' %>"
                                     class="w-full h-12 bg-[#181818] text-white px-4 rounded-lg outline-none"
                                     placeholder="Enter embed author icon URL">
-                            </div>
-
-                            <div class="flex items-start justify-start flex-col w-full text-white gap-3">
-                                <label for="timestamp">Embed Timestamp</label>
-                                <input id="timestamp" type="datetime-local" name="timestamp" value="<%= post.timestamp ? post.timestamp.toISOString().slice(0, 16) : '' %>"
-                                    class="w-full h-12 bg-[#181818] text-white px-4 rounded-lg outline-none">
                             </div>
 
                             <button type="submit"

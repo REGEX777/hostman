@@ -1,17 +1,24 @@
 import express from 'express';
 
-// Model import
-import Post from '../models/Post.js'
+import Post from '../models/Post.js';
+import EmbedConfig from '../models/embedConfig.js';
 
 const router = express.Router();
 
-router.get("/:filename", async(req, res)=>{
-    const post = await Post.findOne({fileName: req.params.filename})
-    if(!post){
-        res.json({"Error":"Post not found"})
-    }
+router.get("/:filename", async (req, res) => {
+    try {
+        const post = await Post.findOne({ fileName: req.params.filename });
+        if (!post) {
+            return res.json({ "Error": "Post not found" });
+        }
 
-    res.render('postPage', {post: post})
-})
+        const embedConfig = await EmbedConfig.findOne();
+
+        res.render('postPage', { post, embedConfig });
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Server Error');
+    }
+});
 
 export default router;

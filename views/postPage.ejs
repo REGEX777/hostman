@@ -4,18 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= post.title %></title>
-    <meta name="description" content="<%= post.description %>">
-    <meta property="og:title" content="<%= post.embedTitle %>">
-    <meta property="og:description" content="<%= post.embedDescription %>">
-    <meta property="og:image" content="<%= post.embedThumbnailUrl %>">
-    <meta name="twitter:title" content="<%= post.embedTitle %>">
-    <meta name="twitter:description" content="<%= post.embedDescription %>">
-    <meta name="twitter:image" content="<%= post.embedThumbnailUrl %>">
+    embedConfig
+    <meta name="description" content="<%= embedConfig.description %>">
+    <meta property="og:title" content="<%= post.fileName %>">
+    <meta property="og:description" content="<%= embedConfig.description %>">
+    <meta property="og:image" content="/uploads/<%= post.fileName %>">
+    <meta name="twitter:title" content="<%= post.fileName %>">
+    <meta name="twitter:description" content="<%= embedConfig.description %>">
+    <meta name="twitter:image" content="/uploads/<%= post.fileName %>">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="theme-color" content="<%= post.embedColor %>">
-    <meta property="og:author" content="<%= post.embedAuthorName %>">
-    <meta name="twitter:creator" content="<%= post.embedAuthorName %>">
-    <meta property="og:url" content="<%= post.fileName %>">
+    <meta name="theme-color" content="<%= embedConfig.color %>">
+    <meta property="og:author" content="<%= embedConfig.authorName %>">
+    <meta name="twitter:creator" content="<%= embedConfig.authorName %>">
+    <meta property="og:url" content="/uploads/<%= post.fileName %>">
     <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body class="bg-[#161F29]">
