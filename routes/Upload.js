@@ -5,7 +5,11 @@ import mongoose from 'mongoose';
 import path from 'path'
 import fs from 'fs';
 import { requireLogin } from '../middleware/auth.js';
+import { fileURLToPath } from 'url';
 
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 // Model Import
 
 import Post from '../models/Post.js';

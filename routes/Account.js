@@ -7,8 +7,13 @@ import ApiKeyLog from '../models/ApiKeyLog.js'; // Assuming you have a model for
 import { requireLogin } from '../middleware/auth.js';
 import { v4 as uuidv4 } from 'uuid';
 import fs from 'fs';
+import { fileURLToPath } from 'url';
 
-const filePath = path.resolve('../internet.json');
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const filePath = path.join(__dirname, '../internet.json');
 const internet = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
 
 const router = express.Router();
