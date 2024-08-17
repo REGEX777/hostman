@@ -9,14 +9,17 @@
     <meta property="og:title" content="<%= post.fileName %>">
     <meta property="og:description" content="<%= embedConfig.description %>">
     <meta property="og:image" content="/uploads/<%= post.fileName %>">
+    <meta property="og:author" content="<%= embedConfig.authorName %>">
     <meta name="twitter:title" content="<%= post.fileName %>">
     <meta name="twitter:description" content="<%= embedConfig.description %>">
     <meta name="twitter:image" content="/uploads/<%= post.fileName %>">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="theme-color" content="<%= embedConfig.color %>">
-    <meta property="og:author" content="<%= embedConfig.authorName %>">
     <meta name="twitter:creator" content="<%= embedConfig.authorName %>">
-    <meta property="og:url" content="/uploads/<%= post.fileName %>">
+    <meta name="theme-color" content="<%= embedConfig.color %>">
+    <meta property="og:upload_date" content="<%= new Date(post.fileUploadTime).toISOString() %>">
+    <meta name="twitter:upload_date" content="<%= new Date(post.fileUploadTime).toISOString() %>">
+
+    <link rel="stylesheet" href="/css/styles.css">
     <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body class="bg-[#161F29]">
