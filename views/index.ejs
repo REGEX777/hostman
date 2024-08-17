@@ -21,10 +21,6 @@
                                 class="flex items-center justify-center p-[0.7rem] text-sm mid-small:text-base bg-[#8B174352] rounded-lg text-[#FB2576]">
                                 <i class="fa-solid fa-arrow-up-right-from-square"></i>
                             </a>
-                            <a href="/embedEditor/<%= post._id %>" target="_blank"
-                                class="flex items-center justify-center p-[0.7rem] text-sm mid-small:text-base bg-[#8B174352] rounded-lg text-[#FB2576]">
-                                <i class="fa-solid fa-pencil"></i>
-                            </a>
                             <button data-post-id="<%= post._id %>"
                                 data-favorite="<%= user.favorites.includes(post._id.toString()) ? 'true' : 'false' %>"
                                 onclick="toggleFavorite(this)"
