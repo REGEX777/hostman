@@ -1,59 +1,59 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create Album</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-</head>
-
-<body class="bg-gray-900 text-white min-h-screen flex items-center justify-center">
-    <div class="bg-gray-800 p-8 rounded-lg shadow-lg w-full max-w-2xl">
-        <h1 class="text-3xl font-bold text-center mb-6">Create a New Album</h1>
-        <form action="/albums/create" method="POST">
-            <div>
-                <label for="name" class="block text-sm font-medium text-gray-300">Album Name:</label>
-                <input type="text" id="name" name="name" required
-                    class="mt-1 block w-full px-3 py-2 bg-gray-700 text-white rounded-md border border-gray-600 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
-            </div>
-            <div class="mt-6">
-                <label for="imageIds" class="block text-sm font-medium text-gray-300 mb-3">Select Images:</label>
-                <div class="grid grid-cols-3 gap-4">
-                    <% userImages.forEach(image => { %>
-                    <label class="relative block cursor-pointer">
-                        <input type="checkbox" id="image-<%= image._id %>" value="<%= image._id %>"
-                            class="absolute top-2 left-2 h-5 w-5 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500 peer">
-                        <img src="/uploads/<%= image.fileName %>" alt="Image"
-                            class="w-full h-32 object-cover rounded-md border-2 border-transparent peer-checked:border-indigo-600">
-                    </label>
-                    <% }) %>
+<%- include('partials/nav') -%>
+<div class="flex grow w-full mt-[4rem]">
+    <%- include('partials/sidebar') -%>
+    <div class="flex-grow ml-[5%] overflow-auto">
+        <br>
+        <div class="flex flex-row items-center justify-center w-full font-poppins">
+            <div class="w-[95%] flex flex-col items-start justify-start gap-10">
+                <p class="text-white text-2xl font-medium">Create New Album</p>
+                <div class="w-[60%] p-5 bg-[#151313] text-white font-poppins rounded-lg shadow-lg">
+                    <form action="/albums/create" method="POST">
+                        <div>
+                            <label for="name" class="block text-sm font-medium text-gray-300">Album Name:</label>
+                            <input type="text" id="name" name="name" required
+                                class="mt-1 block w-full px-3 py-2 bg-gray-700 text-white rounded-md border border-gray-600 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                        </div>
+                        <div class="mt-6">
+                            <label for="imageIds" class="block text-sm font-medium text-gray-300 mb-3">Select
+                                Images:</label>
+                            <div class="grid grid-cols-5 gap-4">
+                                <% userImages.forEach(image => { %>
+                                <label class="relative block cursor-pointer">
+                                    <input type="checkbox" id="image-<%= image._id %>" value="<%= image._id %>"
+                                        class="absolute top-2 left-2 h-5 w-5 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500 peer">
+                                    <img src="/uploads/<%= image.fileName %>" alt="Image"
+                                        class="w-full h-32 object-cover rounded-md border-2 border-transparent peer-checked:border-indigo-600">
+                                </label>
+                                <% }) %>
+                            </div>
+                        </div>
+                        <input type="hidden" id="selectedImageIds" name="imageIds" value="">
+                        <button type="submit"
+                            class="w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 mt-6">
+                            Create Album
+                        </button>
+                    </form>
                 </div>
+                <br>
             </div>
-            <input type="hidden" id="selectedImageIds" name="imageIds" value="">
-            <button type="submit"
-                class="w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 mt-6">
-                Create Album
-            </button>
-        </form>
-    </div>
+        </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const selectedImageIdsInput = document.getElementById('selectedImageIds');
-            const checkboxes = Array.from(document.querySelectorAll('input[type="checkbox"]'));
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const selectedImageIdsInput = document.getElementById('selectedImageIds');
+                const checkboxes = Array.from(document.querySelectorAll('input[type="checkbox"]'));
 
-            checkboxes.forEach(checkbox => {
-                checkbox.addEventListener('change', () => {
-                    const selectedIds = checkboxes
-                        .filter(checkbox => checkbox.checked)
-                        .map(checkbox => checkbox.value);
+                checkboxes.forEach(checkbox => {
+                    checkbox.addEventListener('change', () => {
+                        const selectedIds = checkboxes
+                            .filter(checkbox => checkbox.checked)
+                            .map(checkbox => checkbox.value);
 
-                    selectedImageIdsInput.value = selectedIds.join(',');
+                        selectedImageIdsInput.value = selectedIds.join(',');
+                    });
                 });
             });
-        });
-    </script>
-</body>
+        </script>
+        </body>
 
-</html>
+        </html>

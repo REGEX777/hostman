@@ -60,7 +60,7 @@ router.get('/', requireLogin, async (req, res) => {
     }
 });
 
-router.get('/:id', requireLogin, async (req, res) => {
+router.get('/:id', async (req, res) => {
     try {
         const id = req.params.id;
 
@@ -74,7 +74,7 @@ router.get('/:id', requireLogin, async (req, res) => {
         if (!album) {
             return res.status(404).send('Album not found');
         }
-        res.render('album', { album });
+        res.render('album', { album, user: req.user });
     } catch (err) {
         console.error(err);
         res.status(500).send('Server error. Please try again.');
