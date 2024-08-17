@@ -6,7 +6,7 @@
         <div class="flex flex-col text-white items-center justify-center w-full bg-[#000000] font-poppins">
             <div class="flex flex-col items-start justify-center w-[90%] mt-5">
                 <h1 class="text-4xl font-bold text-center mb-8">User Account</h1>
-                <div class="bg-[#151313] rounded-lg p-8 w-full max-w-lg">
+                <div class="bg-[#151313] rounded-lg p-8 w-[60%]">
                     <div class="text-xl font-bold mb-4 text-center">
                         Account Information
                     </div>
@@ -15,6 +15,12 @@
                     </div>
                     <div class="mb-4">
                         <p><strong>API Key:</strong> <%= user.apiKey %></p>
+                    </div>
+                    <div class="flex flex-col items-start w-full justify-center gap-2">
+                        <p><strong>Connection String:</strong></p>
+                        <div class="bg-black min-h-5 py-5 px-5 rounded-xl w-full">
+                            <p><%=internet.domain%>api/post/<%=user.apiKey%></p>
+                        </div>
                     </div>
                     <div class="text-center mt-4">
                         <form id="regenerateApiKeyForm" action="/account/regenerate-api-key" method="POST">

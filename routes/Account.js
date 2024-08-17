@@ -6,6 +6,7 @@ import User from '../models/User.js';
 import ApiKeyLog from '../models/ApiKeyLog.js'; // Assuming you have a model for logging API key usage
 import { requireLogin } from '../middleware/auth.js';
 import { v4 as uuidv4 } from 'uuid';
+import internet from '../internet.json' assert { type: 'json' };
 
 const router = express.Router();
 
@@ -25,7 +26,7 @@ const upload = multer({ storage });
 router.get('/', requireLogin, async (req, res) => {
     try {
         const user = await User.findById(req.user._id);
-        res.render('account', { user });
+        res.render('account', { user, internet });
     } catch (err) {
         console.error(err);
         res.status(500).send('Server error. Please try again.');
